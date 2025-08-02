@@ -1,11 +1,13 @@
 import axios from "axios"
 import { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 export default function AdminProductsPage(){
    
     const[products, setProducts] = useState([]);
-    useEffect(() => {
+    useEffect(
+        () => {
         axios.get(import.meta.env.VITE_BACKEND_URL + "/api/product").then(
             (response) => {
                 console.log(response.data);

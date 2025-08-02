@@ -2,7 +2,7 @@ import { Link, Route, Routes } from "react-router-dom";
 import { FaUsers } from "react-icons/fa";
 import { FaWarehouse } from "react-icons/fa6";
 import { FaShoppingCart } from "react-icons/fa";
-import AdminProductsPage from "./admin/product.jsx";
+import AdminProductsPage from "./admin/products.jsx";
 import AddProductForm from "./admin/addProductForm.jsx";
 
 export default function AdminPage() {
