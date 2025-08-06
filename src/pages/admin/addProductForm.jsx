@@ -39,7 +39,8 @@ export default function AddProductForm() {
 			const token = localStorage.getItem("token");
 			console.log(token);
 
-			await axios.post(import.meta.env.VITE_BACKEND_URL + "/api/product", product, {
+			await axios
+            .post(import.meta.env.VITE_BACKEND_URL + "/api/product", product, {
 					headers: {
 						Authorization: "Bearer " + token,
 					},
