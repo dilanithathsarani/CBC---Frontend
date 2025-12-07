@@ -4,108 +4,130 @@ import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useGoogleLogin } from "@react-oauth/google";
 import { GrGoogle } from "react-icons/gr";
+import loginImg from "../assets/login.jpg"; 
 
 export default function LoginPage() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [loading, setLoading] = useState(false);
+	const [loadingLogin, setLoadingLogin] = useState(false); 
+	const [loadingGoogle, setLoadingGoogle] = useState(false); 
 	const navigate = useNavigate();
+
 	const loginWithGoogle = useGoogleLogin({
 		onSuccess: (res) => {
-			setLoading(true);
+			setLoadingGoogle(true);
 			axios
 				.post(import.meta.env.VITE_BACKEND_URL + "/api/user/google", {
 					accessToken: res.access_token,
 				})
 				.then((response) => {
-					console.log("Login successful", response.data);
 					toast.success("Login successful");
 					localStorage.setItem("token", response.data.token);
 
 					const user = response.data.user;
-					if (user.role === "admin") {
-						navigate("/admin");
-					} else {
-						navigate("/");
-					}
-					setLoading(false);
-				});
+					user.role === "admin" ? navigate("/admin") : navigate("/");
+				})
+				.catch(() => {
+					toast.error("Google login failed");
+				})
+				.finally(() => setLoadingGoogle(false));
+		},
+		onError: () => {
+			toast.error("Google login failed");
+			setLoadingGoogle(false);
 		},
 	});
 
 	function handleLogin() {
-		setLoading(true);
+		setLoadingLogin(true);
 		axios
 			.post(import.meta.env.VITE_BACKEND_URL + "/api/user/login", {
-				email: email,
-				password: password,
+				email,
+				password,
 			})
 			.then((response) => {
-				console.log("Login successful", response.data);
 				toast.success("Login successful");
 				localStorage.setItem("token", response.data.token);
 
 				const user = response.data.user;
-				if (user.role === "admin") {
-					navigate("/admin");
-				} else {
-					navigate("/");
-				}
-				setLoading(false);
+				user.role === "admin" ? navigate("/admin") : navigate("/");
 			})
 			.catch((error) => {
-				console.log("Login failed", error.response.data);
-				toast.error(error.response.data.message || "Login failed");
-				setLoading(false);
-			});
-
-		console.log("Login button clicked");
+				toast.error(error.response?.data?.message || "Login failed");
+			})
+			.finally(() => setLoadingLogin(false));
 	}
+
 	return (
-		<div className="w-full h-screen bg-url(/login-bg.jpg) bg-cover bg-center flex">
-			<div className="w-[50%] h-full"></div>
-			<div className="  w-[50%] h-full flex justify-center items-center">
-				<div className="w-[450px] h-[600px] backdrop-blur-xl shadow-xl rounded-xl flex flex-col justify-center items-center">
+		<div className="w-full h-screen flex bg-[#FDEBD0]">
+			<div
+				className="hidden md:block w-[50%] h-full bg-cover shadow-xl"
+				style={{ backgroundImage: `url(${loginImg})` }}
+			></div>
+
+			<div className="w-full md:w-[50%] h-full flex justify-center items-center p-5">
+				<div className="w-full max-w-[450px] bg-white shadow-2xl rounded-2xl p-8 border border-[#F7CAC9]">
+
+					<h1 className="text-3xl font-bold text-center mb-6 text-[#DC143C]">
+						Welcome Back
+					</h1>
+
 					<input
-						onChange={(e) => {
-							setEmail(e.target.value);
-						}}
-						className="w-[400px] h-[50px] border border-white rounded-xl text-center m-[5px]"
+						onChange={(e) => setEmail(e.target.value)}
 						type="email"
-						placeholder="email"
+						placeholder="Email"
+						className="w-full h-[50px] border border-[#F7CAC9] rounded-xl px-4 mb-4 focus:outline-none focus:ring-2 focus:ring-[#F75270]"
 					/>
+
 					<input
-						onChange={(e) => {
-							setPassword(e.target.value);
-						}}
-						className="w-[400px] h-[50px] border border-white rounded-xl text-center m-[5px]"
+						onChange={(e) => setPassword(e.target.value)}
 						type="password"
-						placeholder="password"
+						placeholder="Password"
+						className="w-full h-[50px] border border-[#F7CAC9] rounded-xl px-4 mb-4 focus:outline-none focus:ring-2 focus:ring-[#F75270]"
 					/>
+
 					<button
 						onClick={handleLogin}
-						className="w-[400px] h-[50px] bg-green-500 text-white rounded-xl cursor-pointer"
+						disabled={loadingLogin}
+						className={`w-full h-[50px] text-white rounded-xl font-semibold transition-all ${
+							loadingLogin
+								? "bg-gray-400 cursor-not-allowed"
+								: "bg-[#DC143C] hover:bg-[#F75270]"
+						}`}
 					>
-						{loading ? "Loading..." : "Login"}
+						{loadingLogin ? "Loading..." : "Login"}
 					</button>
+
 					<button
-						className="w-[400px] h-[50px] bg-green-500 mt-[20px] text-white rounded-xl cursor-pointer flex justify-center items-center"
 						onClick={loginWithGoogle}
+						disabled={loadingGoogle}
+						className={`w-full h-[50px] text-white rounded-xl mt-4 flex items-center justify-center gap-2 transition-all ${
+							loadingGoogle
+								? "bg-gray-400 cursor-not-allowed"
+								: "bg-[#F75270] hover:bg-[#DC143C]"
+						}`}
 					>
-						<GrGoogle className="mr-[10px]" />
-						{loading ? "Loading..." : "Login with Google"}
+						<GrGoogle /> {loadingGoogle ? "Loading..." : "Login with Google"}
 					</button>
-					<p className="text-gray-600 text-center m-[10px]">
-						Don't have an account yet? &nbsp;
-						<span className="text-green-500 cursor-pointer hover:text-green-700">
-							<Link to={"/register"}>Register Now</Link>
-						</span>
+					
+					<p className="text-center mt-6 text-gray-600">
+						Don't have an account?{" "}
+						<Link
+							to="/register"
+							className="text-[#DC143C] hover:underline"
+						>
+							Register Now
+						</Link>
 					</p>
-					<p className="text-gray-600 text-center m-[10px]">
-						Forget your password? &nbsp;
-						<span className="text-green-500 cursor-pointer hover:text-green-700">
-							<Link to={"/forget"}>Reset Password</Link>
-						</span>
+
+					<p className="text-center text-gray-600 mt-2">
+						Forgot password?{" "}
+						<Link
+							to="/forget"
+							className="text-[#DC143C] hover:underline"
+						>
+							Reset Password
+						</Link>
 					</p>
 				</div>
 			</div>
