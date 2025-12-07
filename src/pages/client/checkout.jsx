@@ -12,12 +12,12 @@ export default function CheckoutPage() {
     const [address, setAddress] = useState("");
     const [phone, setPhone] = useState("");
 	const navigate = useNavigate();
+
    function placeOrder(){
-    
         const orderData = {
             name : name,
             address : address,
-            phoneNumber :phone,
+            phoneNumber : phone,
             billItems : []        
         }
         for(let i = 0; i< cart.length; i++){
@@ -28,9 +28,7 @@ export default function CheckoutPage() {
         }
         const token = localStorage.getItem("token");
         axios.post(import.meta.env.VITE_BACKEND_URL + "/api/order", orderData, {
-            headers: {
-                Authorization: "Bearer " + token,
-            },            
+            headers: { Authorization: "Bearer " + token },            
         }).then(()=>{
             toast.success("Order placed successfully");
             navigate("/");
@@ -42,30 +40,26 @@ export default function CheckoutPage() {
 
 	function getTotal() {
 		let total = 0;
-		cart.forEach((item) => {
-			total += item.price * item.quantity;
-		});
+		cart.forEach((item) => { total += item.price * item.quantity; });
 		return total;
 	}
 	function getTotalForLabelledPrice() {
 		let total = 0;
-		cart.forEach((item) => {
-			total += item.labeledPrice * item.quantity;
-		});
+		cart.forEach((item) => { total += item.labeledPrice * item.quantity; });
 		return total;
 	}
 
 	return (
-		<div className="w-full h-full flex justify-center p-[40px] ">
+		<div className="w-full min-h-screen flex justify-center p-[40px] bg-[#FDEBD0]">
 			<div className="w-[700px]">
 				{cart.map((item, index) => {
 					return (
 						<div
 							key={index}
-							className="w-full h-[100px] bg-white shadow-2xl my-[5px] flex justify-between items-center relative"
+							className="w-full h-[100px] bg-white shadow-2xl my-[5px] flex justify-between items-center relative rounded-xl"
 						>
 							<button
-								className="absolute right-[-50px] bg-red-500 w-[40px] h-[40px] rounded-full text-white flex justify-center items-center shadow cursor-pointer"
+								className="absolute right-[-50px] bg-[#DC143C] w-[40px] h-[40px] rounded-full text-white flex justify-center items-center shadow cursor-pointer hover:bg-[#F75270]"
 								onClick={() => {
 									const newCart = cart.filter(
 										(product) => product.productId !== item.productId
@@ -77,99 +71,84 @@ export default function CheckoutPage() {
 							</button>
 							<img
 								src={item.image}
-								className="h-full aspect-square object-cover"
+								className="h-full aspect-square object-cover rounded-l-xl"
 							/>
-							<div className="h-full max-w-[300px] w-[300px] overflow-hidden">
-								<h1 className="text-xl font-bold">{item.name}</h1>
-								<h2 className="text-lg text-gray-500">
-									{item.altNames.join(" | ")}
-								</h2>
-								<h2 className="text-lg text-gray-500">
-									LKR: {item.price.toFixed(2)}
-								</h2>
+							<div className="h-full max-w-[300px] w-[300px] overflow-hidden px-2">
+								<h1 className="text-xl font-bold text-[#DC143C]">{item.name}</h1>
+								<h2 className="text-lg text-gray-500">{item.altNames.join(" | ")}</h2>
+								<h2 className="text-lg text-gray-500">LKR: {item.price.toFixed(2)}</h2>
 							</div>
 							<div className="h-full w-[100px] flex justify-center items-center">
 								<button
-									className="text-2xl w-[30px] h-[30px] bg-black text-white rounded-full flex justify-center items-center cursor-pointer mx-[5px]"
+									className="text-2xl w-[30px] h-[30px] bg-[#F75270] text-white rounded-full flex justify-center items-center cursor-pointer mx-[5px] hover:bg-[#DC143C]"
 									onClick={() => {
 										const newCart = cart;
 										newCart[index].quantity -= 1;
-										if (newCart[index].quantity <= 0)
-											newCart[index].quantity = 1;
+										if (newCart[index].quantity <= 0) newCart[index].quantity = 1;
 										setCart(newCart);
 										setCartRefresh(!cartRefresh);
 									}}
-								>
-									-
-								</button>
+								>-</button>
 								<h1 className="text-xl font-bold">{item.quantity}</h1>
 								<button
-									className="text-2xl w-[30px] h-[30px] bg-black text-white rounded-full flex justify-center items-center cursor-pointer mx-[5px]"
+									className="text-2xl w-[30px] h-[30px] bg-[#F75270] text-white rounded-full flex justify-center items-center cursor-pointer mx-[5px] hover:bg-[#DC143C]"
 									onClick={() => {
 										const newCart = cart;
 										newCart[index].quantity += 1;
 										setCart(newCart);
 										setCartRefresh(!cartRefresh);
 									}}
-								>
-									+
-								</button>
+								>+</button>
 							</div>
 							<div className="h-full w-[100px] flex justify-center items-center">
-								<h1 className="text-xl w-full text-end pr-2">
-									{(item.price * item.quantity).toFixed(2)}
-								</h1>
+								<h1 className="text-xl w-full text-end pr-2">{(item.price * item.quantity).toFixed(2)}</h1>
 							</div>
 						</div>
 					);
 				})}
-				<div className="w-full  flex justify-end">
-					<h1 className="w-[100px] text-xl  text-end pr-2">Total</h1>
-					<h1 className="w-[100px] text-xl  text-end pr-2">
-						{getTotalForLabelledPrice().toFixed(2)}
-					</h1>
+
+				<div className="w-full flex justify-end mt-4">
+					<h1 className="w-[100px] text-xl text-end pr-2">Total</h1>
+					<h1 className="w-[100px] text-xl text-end pr-2">{getTotalForLabelledPrice().toFixed(2)}</h1>
 				</div>
-				<div className="w-full  flex justify-end">
-					<h1 className="w-[100px] text-xl  text-end pr-2">Discount</h1>
-					<h1 className="w-[100px] text-xl border-b-[2px] text-end pr-2">
-						{(getTotalForLabelledPrice() - getTotal()).toFixed(2)}
-					</h1>
+				<div className="w-full flex justify-end">
+					<h1 className="w-[100px] text-xl text-end pr-2">Discount</h1>
+					<h1 className="w-[100px] text-xl border-b-[2px] text-end pr-2">{(getTotalForLabelledPrice() - getTotal()).toFixed(2)}</h1>
 				</div>
-				<div className="w-full  flex justify-end">
-					<h1 className="w-[100px] text-xl  text-end pr-2">Net total</h1>
-					<h1 className="w-[100px] text-xl  text-end pr-2 border-b-[4px] border-double ">
-						{getTotal().toFixed(2)}
-					</h1>
+				<div className="w-full flex justify-end">
+					<h1 className="w-[100px] text-xl text-end pr-2">Net total</h1>
+					<h1 className="w-[100px] text-xl text-end pr-2 border-b-[4px] border-double">{getTotal().toFixed(2)}</h1>
 				</div>
-                <div className="w-full  flex justify-end">
-                    <h1 className="w-[100px] text-xl  text-end pr-2">Name</h1>
+
+                <div className="w-full flex justify-end mt-2">
+                    <h1 className="w-[100px] text-xl text-end pr-2">Name</h1>
                     <input
-                        className="w-[200px] text-xl border-b-[2px] text-end pr-2"
+                        className="w-[200px] text-xl border-b-[2px] border-[#DC143C] text-end pr-2 focus:outline-none focus:ring-2 focus:ring-[#F75270]"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                     />
 				</div>
                 
-                <div className="w-full  flex justify-end">
-                    <h1 className="w-[100px] text-xl  text-end pr-2">Phone</h1>
+                <div className="w-full flex justify-end mt-2">
+                    <h1 className="w-[100px] text-xl text-end pr-2">Phone</h1>
                     <input
-                        className="w-[200px] text-xl border-b-[2px] text-end pr-2"
+                        className="w-[200px] text-xl border-b-[2px] border-[#DC143C] text-end pr-2 focus:outline-none focus:ring-2 focus:ring-[#F75270]"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                     />
                 </div>
-                <div className="w-full  flex justify-end">
-                    <h1 className="w-[100px] text-xl  text-end pr-2">Address</h1>
+                <div className="w-full flex justify-end mt-2">
+                    <h1 className="w-[100px] text-xl text-end pr-2">Address</h1>
                     <input
-                        className="w-[200px] text-xl border-b-[2px] text-end pr-2"
+                        className="w-[200px] text-xl border-b-[2px] border-[#DC143C] text-end pr-2 focus:outline-none focus:ring-2 focus:ring-[#F75270]"
                         value={address}
                         onChange={(e) => setAddress(e.target.value)}
                     />
                 </div>
                
-				<div className="w-full  flex justify-end mt-4">
+				<div className="w-full flex justify-end mt-4">
 					<button
-						className="w-[170px] text-xl  text-center shadow pr-2 bg-pink-400 text-white h-[40px] rounded-lg cursor-pointer"
+						className="w-[170px] text-xl text-center shadow bg-[#FF8BA0] text-white h-[40px] rounded-lg cursor-pointer hover:bg-[#DC143C] transition-all duration-300"
 						onClick={placeOrder}
 					>
 						Place Order
