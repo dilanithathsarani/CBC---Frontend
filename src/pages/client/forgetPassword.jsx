@@ -3,151 +3,113 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 
 export default function ForgetPassword() {
-	const [email, setEmail] = useState("");
-	const [otp, setOtp] = useState("");
-	const [emailSent, setEmailSent] = useState(false);
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [otp, setOtp] = useState("");
+  const [emailSent, setEmailSent] = useState(false);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-    function sendEmail(){
-        axios.post(import.meta.env.VITE_BACKEND_URL + "/api/user/sendMail", {
-            email: email
-        }).then((response) => {
-            console.log(response.data);
-            setEmailSent(true);
-            toast.success("Email sent successfully");
-        }).catch((error) => {
-            console.log(error);
-            toast.error("Something went wrong");
-        });
+  function sendEmail() {
+    axios
+      .post(import.meta.env.VITE_BACKEND_URL + "/api/user/sendMail", { email })
+      .then((response) => {
+        console.log(response.data);
+        setEmailSent(true);
+        toast.success("Email sent successfully");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Something went wrong");
+      });
+  }
+
+  function changePassword() {
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
     }
-    function changePassword(){
-        if(password !== confirmPassword){
-            toast.error("Passwords do not match");
-            return;
-        }
-        axios.post(import.meta.env.VITE_BACKEND_URL + "/api/user/changePW", {
-            email: email,
-            otp: otp,
-            password: password
-        }).then((response) => {
-            console.log(response.data);
-            toast.success("Password changed successfully");
-            window.location.href = "/login";
-        }).catch((error) => {
-            console.log(error);
-            toast.error("Something went wrong");
-            window.location.reload();
-        });
-    }
-	return (
-		<div className="w-full h-screen bg-gray-200 flex p-2">
-			{
-                emailSent ?
-                <div className="w-full h-full flex items-center justify-center">\
-                    <div className="bg-white p-4 rounded shadow-md w-[400px]">
-                        <h1 className="text-2xl font-bold mb-4">Reset Password</h1>
-                        <div className="mb-4">
-                            <label
-                                htmlFor="otp"
-                                className="block text-sm font-medium text-gray-700"
-                            >
-                                OTP
-                            </label>
-                            <input
-                                type="text"
-                                id="otp"
-                                name="otp"
-                                required
-                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
-                                onChange={(e) => {
-                                    setOtp(e.target.value);
-                                }}
-                                value={otp}
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label
-                                htmlFor="password"
-                                className="block text-sm font-medium text-gray-700"
-                            >
-                                New Password
-                            </label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                required
-                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
-                                onChange={(e) => {
-                                    setPassword(e.target.value);
-                                }}
-                                value={password}
-                            />
-                        </div>
-                        <div className="mb-4">
-                            <label
-                                htmlFor="confirmPassword"
-                                className="block text-sm font-medium text-gray-700"
-                            >
-                                Confirm Password
-                            </label>
-                            <input
-                                type="password"
-                                id="confirmPassword"
-                                name="confirmPassword"
-                                required
-                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
-                                onChange={(e) => {
-                                    setConfirmPassword(e.target.value);
-                                }}
-                                value={confirmPassword}
-                            />
-                        </div>
-                        <button
-                            onClick={changePassword}
-                            type="submit"
-                            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-                        >
-                            Reset Password
-                        </button>
-                    </div>
-                </div>
+    axios
+      .post(import.meta.env.VITE_BACKEND_URL + "/api/user/changePW", {
+        email,
+        otp,
+        password,
+      })
+      .then((response) => {
+        console.log(response.data);
+        toast.success("Password changed successfully");
+        window.location.href = "/login";
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Something went wrong");
+        window.location.reload();
+      });
+  }
 
-
-				:<div className="w-full h-full flex items-center justify-center">
-					<div className="bg-white p-4 rounded shadow-md w-[400px]">
-						<h1 className="text-2xl font-bold mb-4">Forget Password</h1>
-
-						<div className="mb-4">
-							<label
-								htmlFor="email"
-								className="block text-sm font-medium text-gray-700"
-							>
-								Email
-							</label>
-							<input
-								type="email"
-								id="email"
-								name="email"
-								required
-								className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 p-2"
-								onChange={(e) => {
-									setEmail(e.target.value);
-								}}
-								value={email}
-							/>
-						</div>
-						<button
-							type="submit"
-							className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
-                            onClick={sendEmail}
-						>
-							Send OTP
-						</button>
-					</div>
-				</div>
-			}
-		</div>
-	);
+  return (
+    <div className="w-full h-screen flex justify-center items-center
+                    bg-gradient-to-l from-[#FDEBD0] via-[#F7CAC9] to-[#F75270] p-6">
+      <div className="w-full max-w-md py-8 px-6 bg-transparent flex flex-col items-center
+                      border-2 border-[#DC143C] rounded-2xl shadow-[0_0_20px_rgba(220,20,60,0.4)]
+                      backdrop-blur-lg">
+        {!emailSent ? (
+          <>
+            <h1 className="text-3xl font-bold text-[#DC143C] mb-6">Forget Password</h1>
+            <div className="w-full mb-4">
+              <label className="block text-sm font-medium text-[#86003C] mb-1">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full p-3 rounded-xl border border-[#F75270] bg-transparent text-[#333] placeholder-[#86003C] focus:outline-none focus:ring-2 focus:ring-[#DC143C] text-center"
+              />
+            </div>
+            <button
+              onClick={sendEmail}
+              className="w-full p-3 mt-2 bg-[#DC143C] hover:bg-[#F75270] text-white font-semibold rounded-xl transition-all duration-300"
+            >
+              Send OTP
+            </button>
+          </>
+        ) : (
+          <>
+            <h1 className="text-3xl font-bold text-[#DC143C] mb-6">Reset Password</h1>
+            <div className="w-full mb-4">
+              <label className="block text-sm font-medium text-[#86003C] mb-1">OTP</label>
+              <input
+                type="text"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                className="w-full p-3 rounded-xl border border-[#F75270] bg-transparent text-[#333] placeholder-[#86003C] focus:outline-none focus:ring-2 focus:ring-[#DC143C] text-center"
+              />
+            </div>
+            <div className="w-full mb-4">
+              <label className="block text-sm font-medium text-[#86003C] mb-1">New Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full p-3 rounded-xl border border-[#F75270] bg-transparent text-[#333] placeholder-[#86003C] focus:outline-none focus:ring-2 focus:ring-[#DC143C] text-center"
+              />
+            </div>
+            <div className="w-full mb-4">
+              <label className="block text-sm font-medium text-[#86003C] mb-1">Confirm Password</label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                className="w-full p-3 rounded-xl border border-[#F75270] bg-transparent text-[#333] placeholder-[#86003C] focus:outline-none focus:ring-2 focus:ring-[#DC143C] text-center"
+              />
+            </div>
+            <button
+              onClick={changePassword}
+              className="w-full p-3 mt-2 bg-[#DC143C] hover:bg-[#F75270] text-white font-semibold rounded-xl transition-all duration-300"
+            >
+              Reset Password
+            </button>
+          </>
+        )}
+      </div>
+    </div>
+  );
 }
