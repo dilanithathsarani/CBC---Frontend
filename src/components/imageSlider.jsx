@@ -5,40 +5,40 @@ export default function ImageSlider({ images }) {
 
   return (
     <div className="w-full h-full flex justify-center items-center p-4">
-      <div className="bg-white w-[70%] aspect-square rounded-2xl shadow-xl relative overflow-hidden ">
+      <div className="bg-white w-[70%] aspect-square rounded-2xl shadow-2xl relative overflow-hidden">
         <img
           src={activeImage}
-          className="w-full h-full object-cover rounded-2xl"
+          className="w-full h-full object-cover rounded-2xl transition-all duration-500"
           alt="Active"
         />
 
-        <div className="hidden lg:flex h-[100px] w-full bg-white/30 backdrop-blur-md absolute bottom-0 left-0 justify-center items-center gap-2 p-2">
+        <div className="hidden lg:flex h-[100px] w-full bg-white/40 backdrop-blur-md absolute bottom-0 left-0 justify-center items-center gap-3 p-2 rounded-t-xl">
           {images.map((image, index) => (
             <img
               key={index}
               src={image}
               alt={`Thumbnail ${index}`}
               onClick={() => setActiveImage(image)}
-              className={`h-full aspect-square cursor-pointer rounded-lg transition-all duration-300 border-2 ${
+              className={`h-full aspect-square cursor-pointer rounded-lg transition-transform duration-300 border-2 shadow-sm ${
                 activeImage === image
-                  ? "border-[#E41F7B] scale-105"
-                  : "border-transparent hover:opacity-80"
+                  ? "border-[#DC143C] scale-105 shadow-lg"
+                  : "border-transparent hover:opacity-90 hover:scale-105"
               }`}
             />
           ))}
         </div>
 
-        <div className="absolute bottom-[-100px] w-full h-[100px] flex lg:hidden justify-center items-center gap-2">
+        <div className="absolute bottom-[-90px] w-full h-[90px] flex lg:hidden justify-center items-center gap-2">
           {images.map((image, index) => (
             <img
               key={index}
               src={image}
               alt={`Thumbnail ${index}`}
               onClick={() => setActiveImage(image)}
-              className={`h-[70px] aspect-square cursor-pointer rounded-full transition-all duration-300 border-2 ${
+              className={`h-[70px] aspect-square cursor-pointer rounded-full transition-transform duration-300 border-2 shadow-sm ${
                 activeImage === image
-                  ? "border-[#E41F7B] scale-105"
-                  : "border-gray-300 hover:opacity-80"
+                  ? "border-[#DC143C] scale-105 shadow-lg"
+                  : "border-gray-300 hover:opacity-90 hover:scale-105"
               }`}
             />
           ))}
