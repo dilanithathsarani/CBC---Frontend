@@ -48,7 +48,7 @@ export default function ForgetPassword() {
 
   return (
     <div className="w-full h-screen flex justify-center items-center
-                    bg-gradient-to-l from-[#FDEBD0] via-[#F7CAC9] to-[#F75270] p-6">
+                    bg-gradient-to-r from-[#FDEFF4] via-[#FFC0D3] to-[#FF5C8D] p-6">
       <div className="w-full max-w-md py-8 px-6 bg-transparent flex flex-col items-center
                       border-2 border-[#DC143C] rounded-2xl shadow-[0_0_20px_rgba(220,20,60,0.4)]
                       backdrop-blur-lg">

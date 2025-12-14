@@ -60,7 +60,6 @@ export default function LoginPage() {
 
   return (
     <div className="w-full h-screen flex overflow-hidden">
-      {/* Left Side - Image */}
       <div className="hidden md:flex w-1/2 justify-center items-center">
         <img
           src={loginImg}
@@ -70,7 +69,7 @@ export default function LoginPage() {
       </div>
 
       <div className="w-full md:w-1/2 flex justify-center items-center
-                      bg-gradient-to-r from-[#FDEBD0] via-[#F7CAC9] to-[#F75270] p-6">
+                      bg-gradient-to-r from-[#FDEFF4] via-[#FFC0D3] to-[#FF5C8D] p-6">
         <div className="w-full max-w-md py-8 px-6 bg-transparent flex flex-col items-center
                          rounded-2xl shadow-[0_0_20px_rgba(220,20,60,0.4)]
                         backdrop-blur-lg">
@@ -94,7 +93,7 @@ export default function LoginPage() {
             onClick={handleLogin}
             disabled={loadingLogin}
             className={`w-full h-[50px] text-white rounded-xl font-semibold transition-all ${
-              loadingLogin ? "bg-gray-400 cursor-not-allowed" : "bg-[#DC143C] hover:bg-[#F75270]"
+              loadingLogin ? "bg-[#FDEFF4] cursor-not-allowed" : "bg-[#DC143C] hover:bg-[#F75270]"
             }`}
           >
             {loadingLogin ? "Loading..." : "Login"}
@@ -104,7 +103,7 @@ export default function LoginPage() {
             onClick={loginWithGoogle}
             disabled={loadingGoogle}
             className={`w-full h-[50px] text-white rounded-xl mt-4 flex items-center justify-center gap-2 transition-all ${
-              loadingGoogle ? "bg-gray-400 cursor-not-allowed" : "bg-[#F75270] hover:bg-[#DC143C]"
+              loadingGoogle ? "bg-[#FDEFF4] cursor-not-allowed" : "bg-[#F75270] hover:bg-[#DC143C]"
             }`}
           >
             <GrGoogle /> {loadingGoogle ? "Loading..." : "Login with Google"}

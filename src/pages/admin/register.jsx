@@ -54,8 +54,7 @@ export default function RegisterPage() {
 
   return (
     <div className="w-full h-screen flex overflow-hidden">
-      {/* Left Side - Form */}
-      <div className="w-full md:w-1/2 flex justify-center items-center bg-gradient-to-l from-[#FDEBD0] via-[#F7CAC9] to-[#F75270] p-6">
+      <div className="w-full md:w-1/2 flex justify-center items-center bg-gradient-to-r from-[#FF5C8D] via-[#FFC0D3] to-[#FDEFF4] p-6">
         <div className="w-full max-w-md py-8 px-6 bg-transparent flex flex-col items-center rounded-2xl shadow-[0_0_20px_rgba(220,20,60,0.4)] 
                         backdrop-blur-lg">
           <h2 className="text-4xl font-bold text-[#DC143C] mb-6">Sign Up</h2>

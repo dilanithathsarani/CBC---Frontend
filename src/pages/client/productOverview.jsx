@@ -30,15 +30,15 @@ export default function ProductOverview() {
   }, [status]);
 
   return (
-    <div className="w-full min-h-screen bg-[#FDEBD0] p-4 lg:p-16 overflow-hidden">
+    <div className="w-full min-h-screen bg-[#FDEFF4] p-4 lg:p-16 overflow-hidden">
       {status === "loading" && <Loader />}
 
       {status === "loaded" && (
         <div className="w-full flex flex-col lg:flex-row gap-10 h-full">
           {/* Product Name - Mobile */}
-          <h1 className="text-3xl font-bold text-center mb-6 text-[#DC143C] lg:hidden">
+          <h1 className="text-3xl font-bold text-center mb-6 text-[#FF5C8D] lg:hidden">
             {product.name}
-            <span className="block text-lg text-gray-500 mt-1">
+            <span className="block text-lg text-[#524A4E] mt-1">
               {product.altNames.join(" | ")}
             </span>
           </h1>
@@ -48,9 +48,9 @@ export default function ProductOverview() {
           </div>
 
           <div className="w-full lg:w-1/2 flex flex-col justify-center px-4">
-            <h1 className="hidden lg:block text-4xl font-bold text-[#DC143C] text-center mb-6">
+            <h1 className="hidden lg:block text-4xl font-bold text-[#FF5C8D] text-center mb-6">
               {product.name}
-              <span className="block text-xl text-gray-500 mt-2">
+              <span className="block text-xl text-[#524A4E] mt-2">
                 {product.altNames.join(" | ")}
               </span>
             </h1>
@@ -58,26 +58,26 @@ export default function ProductOverview() {
             <div className="text-center mb-6">
               {product.labeledPrice > product.price ? (
                 <>
-                  <h2 className="text-3xl font-semibold text-[#DC143C]">
+                  <h2 className="text-3xl font-semibold text-[#FF5C8D]">
                     LKR.{product.price.toFixed(2)}
                   </h2>
-                  <h2 className="text-xl line-through text-gray-400 mt-1">
+                  <h2 className="text-xl line-through text-[#524A4E] mt-1">
                     LKR.{product.labeledPrice.toFixed(2)}
                   </h2>
                 </>
               ) : (
-                <h2 className="text-3xl font-semibold text-[#DC143C]">
+                <h2 className="text-3xl font-semibold text-[#FF5C8D]">
                   LKR: {product.price.toFixed(2)}
                 </h2>
               )}
             </div>
 
-            <p className="text-lg text-center text-gray-700 mb-8">
+            <p className="text-lg text-center text-[#524A4E] mb-8">
               {product.description}
             </p>
             <div className="flex justify-center gap-6 flex-wrap">
               <button
-                className="bg-[#FF8BA0] hover:bg-white text-white hover:text-[#DC143C] border-2 border-[#FF8BA0] font-medium px-6 py-3 rounded-xl shadow-md transition duration-300"
+                className="bg-[#FF5C8D] hover:bg-[#FFC0D3] text-white hover:text-[#524A4E] border-2 border-[#FF5C8D] font-medium px-6 py-3 rounded-xl shadow-[0_6px_15px_rgba(82,74,78,0.15)] transition duration-300"
                 onClick={() => {
                   addToCart(product, 1);
                   toast.success("Product added to cart");
@@ -105,7 +105,7 @@ export default function ProductOverview() {
                     },
                   })
                 }
-                className="bg-[#DC143C] hover:bg-white text-white hover:text-[#DC143C] border-2 border-[#DC143C] font-medium px-6 py-3 rounded-xl shadow-md transition duration-300"
+                className="bg-[#FFC0D3] hover:bg-[#FF5C8D] text-[#524A4E] hover:text-white border-2 border-[#FFC0D3] font-medium px-6 py-3 rounded-xl shadow-[0_6px_15px_rgba(82,74,78,0.15)] transition duration-300"
               >
                 Buy Now
               </button>
