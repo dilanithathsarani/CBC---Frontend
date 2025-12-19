@@ -81,10 +81,10 @@ export default function ReviewPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDEFF4] flex justify-center p-6">
+    <div className="min-h-screen bg-[#FDEFF4] flex flex-col justify-center p-6">
       <Toaster position="top-right" />
 
-      <div className="w-full max-w-5xl">
+      <div className="w-full max-w-5xl flex-1 w-full max-w-6xl mx-auto p-6">
         <h1 className="text-4xl font-bold text-center text-[#FF5C8D] mb-12">
           Customer Reviews
         </h1>

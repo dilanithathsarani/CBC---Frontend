@@ -3,22 +3,41 @@ import { useEffect, useState } from "react";
 import Loader from "../../components/loader";
 import ProductCard from "../../components/productCard";
 import { AiOutlineClose } from "react-icons/ai";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export default function ProductsPage() {
   const [productList, setProductList] = useState([]);
   const [productsLoaded, setProductsLoaded] = useState(false);
   const [search, setSearch] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!productsLoaded) {
-      axios
-        .get(import.meta.env.VITE_BACKEND_URL + "/api/product/")
-        .then((res) => {
-          setProductList(res.data);
-          setProductsLoaded(true);
-        });
-    }
-  }, [productsLoaded]);
+  const queryParams = new URLSearchParams(location.search);
+  const category = queryParams.get("category");
+
+    useEffect(() => {
+    setProductsLoaded(false); // trigger loader
+
+    axios
+      .get(import.meta.env.VITE_BACKEND_URL + "/api/product/")
+      .then((res) => {
+        let products = res.data;
+
+        // If category exists, filter products by category
+        if (category) {
+          products = products.filter((p) =>
+            p.altNames.some((alt) =>
+              alt.toLowerCase() === category.toLowerCase()
+            )
+          );
+        }
+
+        setProductList(products);
+        setProductsLoaded(true);
+      });
+  }, [category]);
 
   function searchProducts() {
     if (search.trim().length > 0) {
@@ -32,8 +51,37 @@ export default function ProductsPage() {
     }
   }
 
+   function filterByCategory(category) {
+    setSelectedCategory(category);
+    if (!category) {
+      setProductsLoaded(false); // reload all products
+    } else {
+      axios
+        .get(import.meta.env.VITE_BACKEND_URL + "/api/product/")
+        .then((res) => {
+          setProductList(res.data.filter((p) => p.category === category));
+        });
+    }
+  }
+
   return (
-    <div className="min-h-screen w-full bg-[#FDEFF4] py-10 px-4">
+    <div className="min-h-screen flex flex-col w-full bg-[#FDEFF4] py-10 px-4">
+      <div className="w-full max-w-4xl mx-auto flex flex-wrap justify-center gap-3 mb-6">
+        
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            onClick={() => filterByCategory(cat)}
+            className={`px-4 py-2 rounded-lg font-medium ${
+              selectedCategory === cat
+                ? "bg-[#FF5C8D] text-white"
+                : "bg-white text-[#524A4E] border border-[#FF5C8D]"
+            }`}
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
       {/* Search Section */}
       <div className="w-full max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
         <div className="relative w-full sm:w-[320px]">
@@ -68,6 +116,17 @@ export default function ProductsPage() {
         </button>
       </div>
 
+{category && (
+        <div className="w-full max-w-4xl mx-auto mb-6 flex justify-start">
+          <button
+            onClick={() => navigate("/products")}
+            className="bg-white text-[#FF5C8D] border border-[#FF5C8D] px-4 py-2 rounded-lg hover:bg-[#FF5C8D] hover:text-white transition"
+          >
+            All
+          </button>
+        </div>
+      )}
+
       {productsLoaded ? (
         <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 place-items-center">
           {productList.map((product) => (
@@ -77,10 +136,16 @@ export default function ProductsPage() {
               className="shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
             />
           ))}
+          {productList.length === 0 && (
+            <p className="text-[#524A4E] text-xl col-span-full text-center">
+              No products found in this category.
+            </p>
+          )}
         </div>
       ) : (
         <Loader />
       )}
+     
     </div>
   );
 }

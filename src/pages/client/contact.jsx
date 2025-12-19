@@ -62,7 +62,7 @@ export default function ContactPage() {
         <div className="flex flex-col gap-6">
           <div className="bg-white rounded-2xl shadow-[0_6px_20px_rgba(82,74,78,0.15)] p-6">
             <h2 className="text-2xl font-semibold text-[#FF5C8D] mb-4">Our Contact Details</h2>
-            <p className="text-[#524A4E] mb-2">Email: support@yourstore.com</p>
+            <p className="text-[#524A4E] mb-2">Email: support@cbcstore.com</p>
             <p className="text-[#524A4E] mb-2">Phone: +94 123 456 789</p>
             <p className="text-[#524A4E]">Address: 123 E-commerce St, Colombo, Sri Lanka</p>
           </div>

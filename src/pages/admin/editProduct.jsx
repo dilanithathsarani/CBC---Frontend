@@ -20,6 +20,7 @@ export default function EditProductForm() {
     const [description, setDescription] = useState(locationData.state.description);
     const [stock, setStock] = useState(locationData.state.stock);
     const [images, setImages] = useState([]);
+    const [category, setCategory] = useState(locationData.state.category);
     
 
     async function handleSubmit() {
@@ -45,6 +46,7 @@ export default function EditProductForm() {
                 description: description,
                 stock: stock,
                 images: result,
+                category
             };
             const token = localStorage.getItem("token");
             console.log(token);
@@ -95,6 +97,17 @@ export default function EditProductForm() {
                     className="w-[400px] h-[50px] border border-gray-500 rounded-xl text-center m-[5px]"
                     placeholder="Alternative Names"
                 />
+                <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="w-[400px] h-[50px] border border-gray-500 rounded-xl text-center m-[5px]"
+                >
+                    <option value="">Select Category</option>
+                    <option value="Skincare">Skincare</option>
+                    <option value="Makeup">Makeup</option>
+                    <option value="Haircare">Haircare</option>
+                    <option value="Fragrance">Accessories</option>
+                </select>
                 <input
                     value={price}
                     onChange={(e) => {

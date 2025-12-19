@@ -59,6 +59,7 @@ export default function AdminProductsPage(){
                     <tr>
                         <th className="p-2">Product ID</th>
                         <th className="p-2">Product Name</th>
+                        <th className="p-2">Category</th>
                         <th className="p-2">Price</th>
                         <th className="p-2">Labeled Price</th>
                         <th className="p-2">Stock</th>
@@ -74,6 +75,7 @@ export default function AdminProductsPage(){
                             <tr key={index} className="border-b border-gray-300 text-center cursor-pointer hover:bg-gray-100 ">
                                 <td className="p-2">{product.productId}</td>
                                 <td className="p-2">{product.name}</td>
+                                <td className="p-2">{product.category}</td>
                                 <td className="p-2">{product.price}</td>
                                 <td className="p-2">{product.labeledPrice}</td>
                                 <td className="p-2">{product.stock}</td>
