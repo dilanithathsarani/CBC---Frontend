@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import axios from "axios";
+import { Footer } from "../../components/footer";
 
 export default function ReviewPage() {
   const [reviews, setReviews] = useState([]);
@@ -81,7 +82,7 @@ export default function ReviewPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDEFF4] flex flex-col justify-center p-6">
+    <div className="min-h-screen bg-[#FDEFF4] flex flex-col justify-center ">
       <Toaster position="top-right" />
 
       <div className="w-full max-w-5xl flex-1 w-full max-w-6xl mx-auto p-6">
@@ -190,6 +191,7 @@ export default function ReviewPage() {
           </div>
         )}
       </div>
+      <Footer/>
     </div>
   );
 }

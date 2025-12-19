@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Loader from "../../components/loader";
 import ImageSlider from "../../components/imageSlider";
 import getCart, { addToCart } from "../../utills/cart";
+import { Footer } from "../../components/footer";
 
 export default function ProductOverview() {
   const params = useParams();
@@ -30,7 +31,7 @@ export default function ProductOverview() {
   }, [status]);
 
   return (
-    <div className="w-full min-h-screen bg-[#FDEFF4] p-4 lg:p-16 overflow-hidden">
+    <div className="w-full min-h-screen bg-[#FDEFF4] overflow-hidden">
       {status === "loading" && <Loader />}
 
       {status === "loaded" && (
@@ -43,7 +44,7 @@ export default function ProductOverview() {
             </span>
           </h1>
 
-          <div className="w-full lg:w-[65%] mt-4">
+          <div className="w-full lg:w-[65%] mt-4 p-6">
             <ImageSlider images={product.images} />
           </div>
 
@@ -119,6 +120,7 @@ export default function ProductOverview() {
           Product Not Found
         </div>
       )}
+      <Footer/>
     </div>
   );
 }

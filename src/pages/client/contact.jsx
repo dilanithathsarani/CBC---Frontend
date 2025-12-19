@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Toaster, toast } from 'react-hot-toast';
+import { Footer } from '../../components/footer';
 
 export default function ContactPage() {
   const [name, setName] = useState('');
@@ -19,10 +20,10 @@ export default function ContactPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDEFF4] flex flex-col items-center p-6">
+    <div className="min-h-screen bg-[#FDEFF4] flex flex-col items-center pt-10">
       <Toaster position="top-right" />
       <h1 className="text-4xl font-bold text-[#FF5C8D] mb-8">Contact Us</h1>
-      <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-10">
+      <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-10 p-6">
         <div className="bg-white rounded-2xl shadow-[0_6px_20px_rgba(82,74,78,0.15)] p-8">
           <h2 className="text-2xl font-semibold text-[#FF5C8D] mb-6">Send Us a Message</h2>
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
@@ -59,7 +60,7 @@ export default function ContactPage() {
           </form>
         </div>
 
-        <div className="flex flex-col gap-6">
+        <div className="flex flex-col gap-6 p-6">
           <div className="bg-white rounded-2xl shadow-[0_6px_20px_rgba(82,74,78,0.15)] p-6">
             <h2 className="text-2xl font-semibold text-[#FF5C8D] mb-4">Our Contact Details</h2>
             <p className="text-[#524A4E] mb-2">Email: support@cbcstore.com</p>
@@ -81,6 +82,7 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

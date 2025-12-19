@@ -128,7 +128,7 @@ export default function LandingPage() {
         </section>
 
         {/* Call to Action */}
-        <section className="text-center py-16 bg-[#FFC0D3]/20 rounded-2xl">
+        <section className="text-center py-16 bg-[#FFC0D3]/20 rounded-2xl mb-6">
           <h2 className="text-3xl font-bold text-[#FF5C8D] mb-4">
             Start Your Beauty Journey Today
           </h2>

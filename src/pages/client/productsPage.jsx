@@ -4,6 +4,7 @@ import Loader from "../../components/loader";
 import ProductCard from "../../components/productCard";
 import { AiOutlineClose } from "react-icons/ai";
 import { useLocation, useNavigate } from "react-router-dom";
+import { Footer } from "../../components/footer";
 
 export default function ProductsPage() {
   const [productList, setProductList] = useState([]);
@@ -64,7 +65,7 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col w-full bg-[#FDEFF4] py-10 px-4">
+    <div className="min-h-screen flex flex-col w-full bg-[#FDEFF4] ">
       <div className="w-full max-w-4xl mx-auto flex flex-wrap justify-center gap-3 mb-6">
         {categories.map((cat) => (
           <button
@@ -134,7 +135,7 @@ export default function ProductsPage() {
       )}
 
       {productsLoaded ? (
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 place-items-center">
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 place-items-center p-6">
           {productList.map((product) => (
             <ProductCard
               key={product.productId}
@@ -151,6 +152,7 @@ export default function ProductsPage() {
       ) : (
         <Loader />
       )}
+      <Footer/>
     </div>
   );
 }
