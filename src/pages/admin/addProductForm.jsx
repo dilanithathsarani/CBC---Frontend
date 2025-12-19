@@ -95,7 +95,7 @@ export default function AddProductForm() {
 					<option value="Skincare">Skincare</option>
 					<option value="Makeup">Makeup</option>
 					<option value="Haircare">Haircare</option>
-					<option value="Fragrance">Accessories</option>
+					<option value="Accessories">Accessories</option>
 				</select>
 				<input
 					value={price}
@@ -133,7 +133,6 @@ export default function AddProductForm() {
 					placeholder="Product Images"
 				/>
 
-				{/* stock */}
 				<input
 					value={stock}
 					onChange={(e) => {

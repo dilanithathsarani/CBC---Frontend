@@ -106,7 +106,7 @@ export default function EditProductForm() {
                     <option value="Skincare">Skincare</option>
                     <option value="Makeup">Makeup</option>
                     <option value="Haircare">Haircare</option>
-                    <option value="Fragrance">Accessories</option>
+                    <option value="Accessories">Accessories</option>
                 </select>
                 <input
                     value={price}
@@ -144,7 +144,6 @@ export default function EditProductForm() {
                     placeholder="Product Images"
                 />
 
-                {/* stock */}
                 <input
                     value={stock}
                     onChange={(e) => {

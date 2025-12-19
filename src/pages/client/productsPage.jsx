@@ -17,44 +17,43 @@ export default function ProductsPage() {
   const queryParams = new URLSearchParams(location.search);
   const category = queryParams.get("category");
 
-    useEffect(() => {
-    setProductsLoaded(false); // trigger loader
-
+  function loadProducts(cat = null) {
+    setProductsLoaded(false);
     axios
-      .get(import.meta.env.VITE_BACKEND_URL + "/api/product/")
+      .get(import.meta.env.VITE_BACKEND_URL + "/api/product/", {
+        params: cat ? { category: cat } : {},
+      })
       .then((res) => {
-        let products = res.data;
-
-        // If category exists, filter products by category
-        if (category) {
-          products = products.filter((p) =>
-            p.altNames.some((alt) =>
-              alt.toLowerCase() === category.toLowerCase()
-            )
-          );
-        }
-
-        setProductList(products);
+        setProductList(res.data);
+        setProductsLoaded(true);
+      })
+      .catch(() => {
         setProductsLoaded(true);
       });
+  }
+
+  useEffect(() => {
+    loadProducts(category);
+    setSelectedCategory(category || "");
   }, [category]);
 
   function searchProducts() {
-    if (search.trim().length > 0) {
+    if (search.trim().length == 0) return;
+    setProductsLoaded(false);
+    {
       axios
-        .get(
-          import.meta.env.VITE_BACKEND_URL + "/api/product/search/" + search
-        )
+        .get(import.meta.env.VITE_BACKEND_URL + "/api/product/search/" + search)
         .then((res) => {
           setProductList(res.data.products);
+          setProductsLoaded(true);
         });
     }
   }
 
-   function filterByCategory(category) {
+  function filterByCategory(category) {
     setSelectedCategory(category);
     if (!category) {
-      setProductsLoaded(false); // reload all products
+      setProductsLoaded(false);
     } else {
       axios
         .get(import.meta.env.VITE_BACKEND_URL + "/api/product/")
@@ -67,7 +66,6 @@ export default function ProductsPage() {
   return (
     <div className="min-h-screen flex flex-col w-full bg-[#FDEFF4] py-10 px-4">
       <div className="w-full max-w-4xl mx-auto flex flex-wrap justify-center gap-3 mb-6">
-        
         {categories.map((cat) => (
           <button
             key={cat}
@@ -109,17 +107,25 @@ export default function ProductsPage() {
         </button>
 
         <button
-          onClick={() => setProductsLoaded(false)}
+          onClick={() => {
+            setSearch("");
+            setSelectedCategory("");
+            navigate("/products", { replace: true });
+            loadProducts();
+          }}
           className="bg-white text-[#524A4E] font-medium px-5 py-2 rounded-lg border border-[#FF5C8D] hover:bg-[#FF5C8D] hover:text-white transition shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
         >
           Reset
         </button>
       </div>
 
-{category && (
+      {category && (
         <div className="w-full max-w-4xl mx-auto mb-6 flex justify-start">
           <button
-            onClick={() => navigate("/products")}
+            onClick={() => {
+              navigate("/products");
+              loadProducts();
+            }}
             className="bg-white text-[#FF5C8D] border border-[#FF5C8D] px-4 py-2 rounded-lg hover:bg-[#FF5C8D] hover:text-white transition"
           >
             All
@@ -145,7 +151,6 @@ export default function ProductsPage() {
       ) : (
         <Loader />
       )}
-     
     </div>
   );
 }
