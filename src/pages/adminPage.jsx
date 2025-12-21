@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import Loader from "../components/loader";
 import axios from "axios";
 import toast from "react-hot-toast";
+import EditOrderForm from "./admin/editOrder";
 
 export default function AdminPage() {
 	const [userValidated, setUserValidated] = useState(false);
@@ -44,35 +45,70 @@ export default function AdminPage() {
 		}
 	}, []);
 	return (
-		<div className="w-full h-screen bg-gray-200 flex p-2">
-			{userValidated ? (
-				<>
-					<div className="h-full w-[300px] ">
-						<Link to="/admin/users" className="p-2 flex items-center">
-							<FaUsers className="mr-2" /> Users
-						</Link>
-						<Link to="/admin/products" className="p-2 flex items-center">
-							<MdWarehouse className="mr-2" />
-							Products
-						</Link>
-						<Link to="/admin/orders" className="p-2 flex items-center">
-							<FaFileInvoice className="mr-2" />
-							Orders
-						</Link>
-					</div>
-					<div className="h-full bg-white w-[calc(100vw-300px)] rounded-lg">
-						<Routes path="/*">
-							<Route path="/users" element={<h1>Users</h1>} />
-							<Route path="/products" element={<AdminProductsPage />} />
-							<Route path="/orders" element={<AdminOrdersPage />} />
-							<Route path="/addProduct" element={<AddProductForm />} />
-							<Route path="/editProduct" element={<EditProductForm />} />
-						</Routes>
-					</div>
-				</>
-			) : (
-				<Loader />
-			)}
-		</div>
+<div
+  className="w-full h-screen flex p-2"
+  style={{ background: "linear-gradient(135deg, #FDEFF4, #FFC0D3)", }} // page background
+>
+  {userValidated ? (
+    <>
+      {/* Sidebar */}
+      <div
+        className="h-full w-[300px] flex flex-col p-4 rounded-lg"
+        style={{
+          background: "linear-gradient(180deg, #524A4E, #FF5C8D)", 
+        }}
+      >
+        <Link
+          to="/admin/users"
+          className="p-3 flex items-center rounded-md mb-2 transition-all hover:bg-[#FF5C8D]/80 hover:scale-105 text-white font-semibold shadow-sm"
+        >
+          <FaUsers className="mr-3" /> Users
+        </Link>
+        <Link
+          to="/admin/products"
+          className="p-3 flex items-center rounded-md mb-2 transition-all hover:bg-[#FF5C8D]/80 hover:scale-105 text-white font-semibold shadow-sm"
+        >
+          <MdWarehouse className="mr-3" /> Products
+        </Link>
+        <Link
+          to="/admin/orders"
+          className="p-3 flex items-center rounded-md transition-all hover:bg-[#FF5C8D]/80 hover:scale-105 text-white font-semibold shadow-sm"
+        >
+          <FaFileInvoice className="mr-3" /> Orders
+        </Link>
+      </div>
+
+      {/* Main Content */}
+      <div
+        className="h-full w-[calc(100vw-300px)] rounded-lg overflow-hidden ml-4 p-4"
+        style={{
+          background: "linear-gradient(180deg, #FFC0D3, #FF5C8D/60)",
+        }}
+      >
+        <Routes path="/*">
+          <Route
+            path="/users"
+            element={
+              <h1
+                className="text-3xl font-bold mb-4"
+                style={{ color: "#524A4E" }}
+              >
+                Users
+              </h1>
+            }
+          />
+          <Route path="/products" element={<AdminProductsPage />} />
+          <Route path="/orders" element={<AdminOrdersPage />} />
+          <Route path="/addProduct" element={<AddProductForm />} />
+          <Route path="/editProduct" element={<EditProductForm />} />
+		  <Route path="/editOrder" element={<EditOrderForm />} />
+        </Routes>
+      </div>
+    </>
+  ) : (
+    <Loader />
+  )}
+</div>
+
 	);
 }

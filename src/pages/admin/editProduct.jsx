@@ -67,107 +67,104 @@ export default function EditProductForm() {
     }
 
     return (
-        <div className="w-full h-full rounded-lg  flex justify-center items-center">
-            <div className="w-[500px] h-[600px]  rounded-lg shadow-lg flex flex-col items-center">
-                <h1 className="text-3xl font-bold text-gray-700 m-[10px]">
-                    Edit Product
-                </h1>
-                <input
-                    disabled
-                    value={productId}
-                    onChange={(e) => {
-                        setProductId(e.target.value);
-                    }}
-                    className="w-[400px] h-[50px] border border-gray-500 rounded-xl text-center m-[5px]"
-                    placeholder="product ID"
-                />
-                <input
-                    value={name}
-                    onChange={(e) => {
-                        setName(e.target.value);
-                    }}
-                    className="w-[400px] h-[50px] border border-gray-500 rounded-xl text-center m-[5px]"
-                    placeholder="Product Name"
-                />
-                <input
-                    value={altNames}
-                    onChange={(e) => {
-                        setAltNames(e.target.value);
-                    }}
-                    className="w-[400px] h-[50px] border border-gray-500 rounded-xl text-center m-[5px]"
-                    placeholder="Alternative Names"
-                />
-                <select
-                    value={category}
-                    onChange={(e) => setCategory(e.target.value)}
-                    className="w-[400px] h-[50px] border border-gray-500 rounded-xl text-center m-[5px]"
-                >
-                    <option value="">Select Category</option>
-                    <option value="Skincare">Skincare</option>
-                    <option value="Makeup">Makeup</option>
-                    <option value="Haircare">Haircare</option>
-                    <option value="Accessories">Accessories</option>
-                </select>
-                <input
-                    value={price}
-                    onChange={(e) => {
-                        setPrice(e.target.value);
-                    }}
-                    type="number"
-                    className="w-[400px] h-[50px] border border-gray-500 rounded-xl text-center m-[5px]"
-                    placeholder="Price"
-                />
-                <input
-                    value={labeledPrice}
-                    onChange={(e) => {
-                        setLabeledPrice(e.target.value);
-                    }}
-                    type="number"
-                    className="w-[400px] h-[50px] border border-gray-500 rounded-xl text-center m-[5px]"
-                    placeholder="Labelled Price"
-                />
-                <textarea
-                    value={description}
-                    onChange={(e) => {
-                        setDescription(e.target.value);
-                    }}
-                    className="w-[400px] h-[50px] border border-gray-500 rounded-xl text-center m-[5px]"
-                    placeholder="Description"
-                />
-                <input
-                    type="file"
-                    onChange={(e) => {
-                        setImages(e.target.files);
-                    }}
-                    multiple
-                    className="w-[400px] h-[50px] border border-gray-500 rounded-xl text-center m-[5px]"
-                    placeholder="Product Images"
-                />
+<div
+  className="w-full h-full rounded-lg flex justify-center items-center"
+  style={{ backgroundColor: "#FDEFF4" }}
+>
+  <div
+    className="w-[520px] h-[620px] rounded-2xl shadow-xl flex flex-col items-center transition-all duration-300"
+    style={{ backgroundColor: "#FFFFFF" }}
+  >
+    <h1
+      className="text-3xl font-bold m-[15px] tracking-wide mt-8"
+      style={{ color: "#C85A87" }}
+    >
+      Edit Product
+    </h1>
 
-                <input
-                    value={stock}
-                    onChange={(e) => {
-                        setStock(e.target.value);
-                    }}
-                    type="number"
-                    className="w-[400px] h-[50px] border border-gray-500 rounded-xl text-center m-[5px]"
-                    placeholder="Stock"
-                />
-                <div className="w-[400px]  h-[100px]  flex justify-between items-center rounded-lg">
-                    <Link
-                        to={"/admin/products"}
-                        className="bg-red-500 text-white p-[10px] w-[180px] text-center rounded-lg  hover:bg-red-600 "
-                    >
-                        Cancel
-                    </Link>
-                    <button
-                        onClick={handleSubmit}
-                        className="bg-green-500 cursor-pointer text-white p-[10px] w-[180px] text-center rounded-lg ml-[10px] hover:bg-green-600"
-                    >
-                        Edit Product
-                    </button>
-                </div>
-            </div>
-        </div>
+    {[
+      { value: productId, disabled: true, placeholder: "Product ID", onChange: e => setProductId(e.target.value) },
+      { value: name, placeholder: "Product Name", onChange: e => setName(e.target.value) },
+      { value: altNames, placeholder: "Alternative Names", onChange: e => setAltNames(e.target.value) }
+    ].map((field, i) => (
+      <input
+        key={i}
+        {...field}
+        className="w-[400px] h-[50px] rounded-xl text-center m-[6px] border transition-all duration-200 focus:outline-none focus:shadow-md"
+        style={{ borderColor: "#FFC0D3" }}
+      />
+    ))}
+
+    <select
+      value={category}
+      onChange={(e) => setCategory(e.target.value)}
+      className="w-[400px] h-[50px] rounded-xl text-center m-[6px] border bg-white transition-all duration-200 focus:outline-none focus:shadow-md"
+      style={{ borderColor: "#FFC0D3" }}
+    >
+      <option value="">Select Category</option>
+      <option value="Skincare">Skincare</option>
+      <option value="Makeup">Makeup</option>
+      <option value="Haircare">Haircare</option>
+      <option value="Accessories">Accessories</option>
+    </select>
+
+    {[
+      { value: price, placeholder: "Price", onChange: e => setPrice(e.target.value) },
+      { value: labeledPrice, placeholder: "Labelled Price", onChange: e => setLabeledPrice(e.target.value) }
+    ].map((field, i) => (
+      <input
+        key={i}
+        {...field}
+        type="number"
+        className="w-[400px] h-[50px] rounded-xl text-center m-[6px] border transition-all duration-200 focus:outline-none focus:shadow-md"
+        style={{ borderColor: "#FFC0D3" }}
+      />
+    ))}
+
+    <textarea
+      value={description}
+      onChange={(e) => setDescription(e.target.value)}
+      className="w-[400px] h-[60px] rounded-xl text-center m-[6px] border transition-all duration-200 focus:outline-none focus:shadow-md"
+      style={{ borderColor: "#FFC0D3" }}
+      placeholder="Description"
+    />
+
+    <input
+      type="file"
+      onChange={(e) => setImages(e.target.files)}
+      multiple
+      className="w-[400px] h-[50px] rounded-xl text-center m-[6px] border bg-white cursor-pointer"
+      style={{ borderColor: "#FFC0D3" }}
+    />
+
+    <input
+      value={stock}
+      onChange={(e) => setStock(e.target.value)}
+      type="number"
+      className="w-[400px] h-[50px] rounded-xl text-center m-[6px] border transition-all duration-200 focus:outline-none focus:shadow-md"
+      style={{ borderColor: "#FFC0D3" }}
+      placeholder="Stock"
+    />
+
+    <div className="w-[400px] h-[100px] flex justify-between items-center mb-8">
+      <Link
+        to={"/admin/products"}
+        className="p-[12px] w-[180px] text-center rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-[2px]"
+        style={{ backgroundColor: "#FDEFF4", color: "#C85A87" }}
+      >
+        Cancel
+      </Link>
+
+      <button
+        onClick={handleSubmit}
+        className="p-[12px] w-[180px] text-center rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-[2px]"
+        style={{ backgroundColor: "#FFC0D3", color: "#7A1F3D" }}
+      >
+        Edit Product
+      </button>
+    </div>
+  </div>
+</div>
+
     );
 }

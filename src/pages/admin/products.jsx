@@ -50,66 +50,88 @@ export default function AdminProductsPage(){
     }
 
     return(
-        <div className="w-full h-full rounded-lg relative">
-            <Link to={"/admin/addProduct"} className="text-white bg-gray-700 p-[12px] text-3xl rounded-full cursor-pointer hover:bg-gray-300 hover:text-gray-700 absolute right-5 bottom-5">
-                <FaPlus />
-            </Link>
-            {loaded&&<table className="w-full ">
-                <thead>
-                    <tr>
-                        <th className="p-2">Product ID</th>
-                        <th className="p-2">Product Name</th>
-                        <th className="p-2">Category</th>
-                        <th className="p-2">Price</th>
-                        <th className="p-2">Labeled Price</th>
-                        <th className="p-2">Stock</th>
-                        <th className="p-2">Actions</th>
-                    </tr>
-                </thead>
+<div
+  className="w-full h-full rounded-lg relative"
+  style={{ backgroundColor: "#FDEFF4" }}
+>
+  <Link
+    to={"/admin/addProduct"}
+    className="text-gray-800 p-[12px] text-3xl rounded-full cursor-pointer absolute right-5 bottom-5 shadow-lg hover:opacity-90"
+    style={{ backgroundColor: "#FFC0D3" }}
+  >
+    <FaPlus />
+  </Link>
 
-                <tbody>
-                        {products.map(
-                    (product,index)=> {
-                        console.log(product.productId)
-                        return(
-                            <tr key={index} className="border-b border-gray-300 text-center cursor-pointer hover:bg-gray-100 ">
-                                <td className="p-2">{product.productId}</td>
-                                <td className="p-2">{product.name}</td>
-                                <td className="p-2">{product.category}</td>
-                                <td className="p-2">{product.price}</td>
-                                <td className="p-2">{product.labeledPrice}</td>
-                                <td className="p-2">{product.stock}</td>
-                                <td className="p-2">
-                                    <div className="w-full h-full flex justify-center">
-                                        <FaRegTrashAlt onClick={
-                                            ()=>{
-                                                deleteProduct(product.productId)
-                                            }
-                                        } className="text-[25px] m-[10px] hover:text-red-600"/>
-                                        <MdOutlineModeEdit 
-                                        onClick={
-                                            ()=>{
-                                                navigate("/admin/editProduct",{
-                                                    state:product
-                                                })
-                                            }
-                                        }
-                                         className="text-[25px] m-[10px] hover:text-blue-500"/>
-                                    </div>
-                                </td>
-                            </tr>
-                        )
-                    }
-                    )
-            }
-                </tbody>
-            </table>}
-            {
-                !loaded&&
-                <Loader/>
-            }
-            
-        </div>
+  {loaded && (
+    // Scrollable container
+    <div className="max-h-[calc(100vh-100px)] overflow-y-auto rounded-lg">
+      <table className="w-full border-collapse">
+        <thead>
+          <tr
+            className="text-gray-800"
+            style={{ backgroundColor: "#FFC0D3" }}
+          >
+            <th className="p-3">Product ID</th>
+            <th className="p-3">Product Name</th>
+            <th className="p-3">Category</th>
+            <th className="p-3">Price</th>
+            <th className="p-3">Labeled Price</th>
+            <th className="p-3">Stock</th>
+            <th className="p-3">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {products.map((product, index) => {
+            return (
+              <tr
+                key={index}
+                className="text-center border-b cursor-pointer"
+                style={{ borderColor: "#FFC0D3" }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.backgroundColor = "#FFF7FA")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.backgroundColor = "transparent")
+                }
+              >
+                <td className="p-3">{product.productId}</td>
+                <td className="p-3">{product.name}</td>
+                <td className="p-3">{product.category}</td>
+                <td className="p-3">{product.price}</td>
+                <td className="p-3">{product.labeledPrice}</td>
+                <td className="p-3">{product.stock}</td>
+                <td className="p-3">
+                  <div className="w-full h-full flex justify-center">
+                    <FaRegTrashAlt
+                      onClick={() => {
+                        deleteProduct(product.productId);
+                      }}
+                      className="text-[22px] m-[10px] cursor-pointer"
+                      style={{ color: "#C0392B" }}
+                    />
+
+                    <MdOutlineModeEdit
+                      onClick={() => {
+                        navigate("/admin/editProduct", {
+                          state: product,
+                        });
+                      }}
+                      className="text-[22px] m-[10px] cursor-pointer"
+                      style={{ color: "#6D214F" }}
+                    />
+                  </div>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  )}
+
+  {!loaded && <Loader />}
+</div>
+
     )
 }
-
