@@ -72,7 +72,7 @@ export default function AdminUsersPage() {
   );
 
   return (
-    <div className="p-6 min-h-screen" style={{ backgroundColor: "#FDEFF4" }}>
+    <div className="w-full h-full rounded-lg relative p-6" style={{ backgroundColor: "#FDEFF4" }}>
       <h1 className="text-3xl font-bold mb-6 text-[#524A4E]">
         👤 Manage Users
       </h1>
@@ -91,10 +91,17 @@ export default function AdminUsersPage() {
       </div>
 
       {loaded ? (
-        <div className="max-h-[calc(100vh-100px)] overflow-y-auto rounded-lg bg-white shadow-lg border border-[#FFC0D3] pb-25">
+        <div className="rounded-lg bg-white shadow-lg border border-[#FFC0D3] pb-4">
+          <div className="max-h-[65vh] overflow-y-auto">
           <table className="w-full border-collapse">
-            <thead className="sticky top-0 z-10" style={{ backgroundColor: "#FFC0D3" }}>
-              <tr className="text-gray-800" style={{ backgroundColor: "#FFC0D3" }}>
+            <thead
+              className="sticky top-0 z-10"
+              style={{ backgroundColor: "#FFC0D3" }}
+            >
+              <tr
+                className="text-gray-800"
+                style={{ backgroundColor: "#FFC0D3" }}
+              >
                 <th className="p-3">Name</th>
                 <th className="p-3">Email</th>
                 <th className="p-3">Role</th>
@@ -107,8 +114,7 @@ export default function AdminUsersPage() {
               {filteredUsers.map((user, i) => (
                 <tr
                   key={user._id}
-                  className=
-                    "text-center border-b cursor-pointer"
+                  className="text-center border-b cursor-pointer"
                   style={{ borderColor: "#FFC0D3" }}
                   onMouseEnter={(e) =>
                     (e.currentTarget.style.backgroundColor = "#FFF7FA")
@@ -146,16 +152,16 @@ export default function AdminUsersPage() {
                   </td>
                   <td className="p-3">
                     <div className="w-full h-full flex justify-center">
-                    <FaRegTrashAlt
-                      onClick={() => deleteUser(user._id)}
-                      className="text-[22px] m-[10px] cursor-pointer"
-                      style={{ color: "#C0392B" }}
-                    />
-                    <MdOutlineModeEdit
-                      onClick={() => toggleStatus(user._id)}
-                      className="text-[22px] m-[10px] cursor-pointer"
-                      style={{ color: "#6D214F" }}
-                    />
+                      <FaRegTrashAlt
+                        onClick={() => deleteUser(user._id)}
+                        className="text-[22px] m-[10px] cursor-pointer"
+                        style={{ color: "#C0392B" }}
+                      />
+                      <MdOutlineModeEdit
+                        onClick={() => toggleStatus(user._id)}
+                        className="text-[22px] m-[10px] cursor-pointer"
+                        style={{ color: "#6D214F" }}
+                      />
                     </div>
                   </td>
                 </tr>
@@ -169,6 +175,7 @@ export default function AdminUsersPage() {
               )}
             </tbody>
           </table>
+          </div>
         </div>
       ) : (
         <Loader />

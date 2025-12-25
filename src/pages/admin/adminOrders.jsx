@@ -10,6 +10,7 @@ export default function AdminOrdersPage() {
   const [loaded, setLoaded] = useState(false);
   const [modalIsDisplaying, setModalIsDisplaying] = useState(false);
   const [displayingOrder, setDisplayingOrder] = useState(null);
+  const [search, setSearch] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,19 +39,45 @@ export default function AdminOrdersPage() {
       )
       .then(() => {
         toast.success("Order status changed successfully");
-        setLoaded(false); // reload orders
+        setLoaded(false);
       });
   }
+  const filteredOrders = orders.filter((order) =>
+    (order.orderId + " " + order.name + " " + order.email)
+      .toLowerCase()
+      .includes(search.toLowerCase())
+  );
 
   return (
-    <div className="w-full h-full rounded-lg relative" style={{ backgroundColor: "#FDEFF4" }}>
+    <div
+      className="w-full h-full rounded-lg relative p-6"
+      style={{ backgroundColor: "#FDEFF4" }}
+    >
+      <h1 className="text-3xl font-bold mb-6 text-[#524A4E]">
+        📦 Manage Orders
+      </h1>
+      <div className="mb-4 flex justify-between items-center">
+        <input
+          type="text"
+          placeholder="Search orders..."
+          className="border border-[#FFC0D3] px-4 py-2 rounded w-1/3 focus:outline-none focus:ring-2 focus:ring-[#FF5C8D]"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <span className="text-[#524A4E] font-medium">
+          Total: {filteredOrders.length}
+        </span>
+      </div>
       {loaded ? (
-        <div className="w-full h-full">
-          {/* Scrollable table container */}
-          <div className="max-h-[calc(100vh-50px)] overflow-y-auto rounded-lg">
+        <div>
+          <div className="rounded-lg bg-white shadow-lg border border-[#FFC0D3] pb-4">
+            <div className="max-h-[65vh] overflow-y-auto">
             <table className="w-full border-collapse">
-              <thead>
-                <tr className="text-gray-800" style={{ backgroundColor: "#FFC0D3" }}>
+              <thead className="sticky top-0 z-10" style={{ backgroundColor: "#FFC0D3" }}>
+                <tr
+                  className="text-gray-800"
+                  style={{ backgroundColor: "#FFC0D3" }}
+                >
                   <th className="p-3">Order ID</th>
                   <th className="p-3">Customer Email</th>
                   <th className="p-3">Customer Name</th>
@@ -63,13 +90,17 @@ export default function AdminOrdersPage() {
                 </tr>
               </thead>
               <tbody>
-                {orders.map((order) => (
+                {filteredOrders.map((order) => (
                   <tr
                     key={order.orderId}
                     className="text-center cursor-pointer border-b"
                     style={{ borderColor: "#FFC0D3" }}
-                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#FFF7FA")}
-                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#FFF7FA")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.backgroundColor = "transparent")
+                    }
                   >
                     <td className="p-3">{order.orderId}</td>
                     <td className="p-3">{order.email}</td>
@@ -80,7 +111,9 @@ export default function AdminOrdersPage() {
                       <select
                         value={order.status}
                         className="z-[50]"
-                        onChange={(e) => changeOrderStatus(order.orderId, e.target.value)}
+                        onChange={(e) =>
+                          changeOrderStatus(order.orderId, e.target.value)
+                        }
                       >
                         <option value={"Pending"}>Pending</option>
                         <option value={"Delivered"}>Delivered</option>
@@ -89,8 +122,10 @@ export default function AdminOrdersPage() {
                       </select>
                     </td>
                     <td className="p-3">{order.total.toFixed(2)}</td>
-                    <td className="p-3">{new Date(order.date).toDateString()}</td>
-                    <td className="p-3 flex justify-center gap-2">
+                    <td className="p-3">
+                      {new Date(order.date).toDateString()}
+                    </td>
+                    <td className="p-3 flex flex-col items-center justify-center gap-2">
                       <button
                         className="bg-gray-700 text-white p-2 rounded-lg hover:opacity-90"
                         onClick={() => {
@@ -101,14 +136,24 @@ export default function AdminOrdersPage() {
                         Details
                       </button>
                       <MdOutlineModeEdit
-                        onClick={() => navigate("/admin/editOrder", { state: order })}
+                        onClick={() =>
+                          navigate("/admin/editOrder", { state: order })
+                        }
                         className="text-[22px] m-[2px] cursor-pointer text-[#6D214F]"
                       />
                     </td>
                   </tr>
                 ))}
+                {filteredOrders.length === 0 && (
+                <tr>
+                  <td colSpan={9} className="text-center p-6 text-gray-500">
+                    No orders found.
+                  </td>
+                </tr>
+              )}
               </tbody>
             </table>
+            </div>
           </div>
 
           {/* Modal */}
@@ -148,7 +193,9 @@ export default function AdminOrdersPage() {
                   <div>
                     <p className="font-semibold text-gray-800">Delivery</p>
                     <p>{displayingOrder.address}</p>
-                    <p className="text-gray-600">{displayingOrder.phoneNumber}</p>
+                    <p className="text-gray-600">
+                      {displayingOrder.phoneNumber}
+                    </p>
                   </div>
                 </div>
 
@@ -164,21 +211,35 @@ export default function AdminOrdersPage() {
                       </tr>
                     </thead>
                     <tbody>
-                      {displayingOrder.billItems && displayingOrder.billItems.length > 0 ? (
+                      {displayingOrder.billItems &&
+                      displayingOrder.billItems.length > 0 ? (
                         displayingOrder.billItems.map((item, index) => (
-                          <tr key={index} className="text-center border-b" style={{ borderColor: "#FFC0D3" }}>
+                          <tr
+                            key={index}
+                            className="text-center border-b"
+                            style={{ borderColor: "#FFC0D3" }}
+                          >
                             <td className="p-2 flex items-center gap-2">
-                              <img src={item.image} alt={item.productName} className="w-12 h-12 object-cover rounded-md" />
+                              <img
+                                src={item.image}
+                                alt={item.productName}
+                                className="w-12 h-12 object-cover rounded-md"
+                              />
                               {item.productName}
                             </td>
                             <td className="p-2">{item.quantity}</td>
                             <td className="p-2">{item.price.toFixed(2)}</td>
-                            <td className="p-2">{(item.price * item.quantity).toFixed(2)}</td>
+                            <td className="p-2">
+                              {(item.price * item.quantity).toFixed(2)}
+                            </td>
                           </tr>
                         ))
                       ) : (
                         <tr>
-                          <td colSpan={4} className="text-center py-4 text-gray-600">
+                          <td
+                            colSpan={4}
+                            className="text-center py-4 text-gray-600"
+                          >
                             No items in this order
                           </td>
                         </tr>
