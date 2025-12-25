@@ -6,95 +6,51 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
 export default function AdminOrdersPage() {
-	const [orders, setOrders] = useState([]);
-	const [loaded, setLoaded] = useState(false);
-	const [modalIsDisplaying, setModalIsDisplaying] = useState(false);
-	const [displayingOrder, setDisplayingOrder] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const [loaded, setLoaded] = useState(false);
+  const [modalIsDisplaying, setModalIsDisplaying] = useState(false);
+  const [displayingOrder, setDisplayingOrder] = useState(null);
   const navigate = useNavigate();
 
-	useEffect(() => {
-		if (!loaded) {
-			const token = localStorage.getItem("token");
-			axios
-				.get(import.meta.env.VITE_BACKEND_URL + "/api/order", {
-					headers: {
-						Authorization: "Bearer " + token,
-					},
-				})
-				.then((response) => {
-					setOrders(response.data);
-					setLoaded(true);
-					console.log(response.data);
-				})
-         .catch(() => toast.error("Failed to load orders"));
-		}
-	}, [loaded]);
-	/*
-    {
-    "_id": "68179297609566291e7ccfc1",
-    "orderId": "ORD0007",
-    "email": "customer@gmail.com",
-    "name": "Dilshan X",
-    "address": "abc,456",
-    "status": "Pending",
-    "phoneNumber": "0777123789",
-    "billItems": [
-        {
-            "productId": "COSM24003",
-            "productName": "AquaFresh Face Wash",
-            "image": "https://acfihbfmgdmhzxvboogf.supabase.co/storage/v1/object/public/images/174515966319584f4fd3735fd65a04e6c05bc45d72df7.jpg",
-            "quantity": 2,
-            "price": 499,
-            "_id": "68179297609566291e7ccfc2"
-        },
-        {
-            "productId": "COSM24004",
-            "productName": "SunGuard SPF 50+",
-            "image": "https://acfihbfmgdmhzxvboogf.supabase.co/storage/v1/object/public/images/1745159690195619e443b79141a8e7e080f38abaa5774.jpg",
-            "quantity": 2,
-            "price": 749,
-            "_id": "68179297609566291e7ccfc3"
-        }
-    ],
-    "total": 2496,
-    "date": "2025-05-04T16:15:19.185Z",
-    "__v": 0
-}
-    */
-
-    function changeOrderStatus(orderId,status){
-        const token = localStorage.getItem("token");
-        axios.put(import.meta.env.VITE_BACKEND_URL + "/api/order/"+orderId, {
-            status: status
-        },{
-            headers: {
-                Authorization: "Bearer " + token,
-            },
-        }).then(
-            ()=>{
-                toast.success("Order status changed successfully");
-                setModalIsDisplaying(false);
-                setLoaded(false)
-            }
-        )
-        
+  useEffect(() => {
+    if (!loaded) {
+      const token = localStorage.getItem("token");
+      axios
+        .get(import.meta.env.VITE_BACKEND_URL + "/api/order", {
+          headers: { Authorization: "Bearer " + token },
+        })
+        .then((response) => {
+          setOrders(response.data);
+          setLoaded(true);
+          console.log("Orders loaded:", response.data);
+        })
+        .catch(() => toast.error("Failed to load orders"));
     }
+  }, [loaded]);
 
-	return (
-    <div
-      className="w-full h-full rounded-lg relative"
-      style={{ backgroundColor: "#FDEFF4" }}
-    >
+  function changeOrderStatus(orderId, status) {
+    const token = localStorage.getItem("token");
+    axios
+      .put(
+        import.meta.env.VITE_BACKEND_URL + "/api/order/" + orderId,
+        { status: status },
+        { headers: { Authorization: "Bearer " + token } }
+      )
+      .then(() => {
+        toast.success("Order status changed successfully");
+        setLoaded(false); // reload orders
+      });
+  }
+
+  return (
+    <div className="w-full h-full rounded-lg relative" style={{ backgroundColor: "#FDEFF4" }}>
       {loaded ? (
         <div className="w-full h-full">
           {/* Scrollable table container */}
           <div className="max-h-[calc(100vh-50px)] overflow-y-auto rounded-lg">
             <table className="w-full border-collapse">
               <thead>
-                <tr
-                  className="text-gray-800"
-                  style={{ backgroundColor: "#FFC0D3" }}
-                >
+                <tr className="text-gray-800" style={{ backgroundColor: "#FFC0D3" }}>
                   <th className="p-3">Order ID</th>
                   <th className="p-3">Customer Email</th>
                   <th className="p-3">Customer Name</th>
@@ -103,21 +59,17 @@ export default function AdminOrdersPage() {
                   <th className="p-3">Status</th>
                   <th className="p-3">Total</th>
                   <th className="p-3">Date</th>
-                  <th className="p-3"></th>
+                  <th className="p-3">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {orders.map((order) => (
-                   <tr
+                  <tr
                     key={order.orderId}
                     className="text-center cursor-pointer border-b"
                     style={{ borderColor: "#FFC0D3" }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.backgroundColor = "#FFF7FA")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.backgroundColor = "transparent")
-                    }
+                    onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#FFF7FA")}
+                    onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
                   >
                     <td className="p-3">{order.orderId}</td>
                     <td className="p-3">{order.email}</td>
@@ -128,9 +80,7 @@ export default function AdminOrdersPage() {
                       <select
                         value={order.status}
                         className="z-[50]"
-                        onChange={(e) =>
-                          changeOrderStatus(order.orderId, e.target.value)
-                        }
+                        onChange={(e) => changeOrderStatus(order.orderId, e.target.value)}
                       >
                         <option value={"Pending"}>Pending</option>
                         <option value={"Delivered"}>Delivered</option>
@@ -139,9 +89,7 @@ export default function AdminOrdersPage() {
                       </select>
                     </td>
                     <td className="p-3">{order.total.toFixed(2)}</td>
-                    <td className="p-3">
-                      {new Date(order.date).toDateString()}
-                    </td>
+                    <td className="p-3">{new Date(order.date).toDateString()}</td>
                     <td className="p-3 flex justify-center gap-2">
                       <button
                         className="bg-gray-700 text-white p-2 rounded-lg hover:opacity-90"
@@ -153,11 +101,9 @@ export default function AdminOrdersPage() {
                         Details
                       </button>
                       <MdOutlineModeEdit
-                      onClick={() =>
-                        navigate("/admin/editOrder", { state: order })
-                      }
-                      className="text-[22px] m-[2px] cursor-pointer text-[#6D214F]"
-                    />
+                        onClick={() => navigate("/admin/editOrder", { state: order })}
+                        className="text-[22px] m-[2px] cursor-pointer text-[#6D214F]"
+                      />
                     </td>
                   </tr>
                 ))}
@@ -206,34 +152,39 @@ export default function AdminOrdersPage() {
                   </div>
                 </div>
 
-                {/* Items */}
-                <div className="flex-1 overflow-y-auto p-4 space-y-3">
-                  {displayingOrder.billItems?.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-4 rounded-lg p-3 shadow"
-                      style={{ backgroundColor: "#FFFFFF" }}
-                    >
-                      <img
-                        src={item.image}
-                        alt={item.productName}
-                        className="w-20 h-20 object-cover rounded-md"
-                      />
-
-                      <div className="flex-1">
-                        <h2 className="font-semibold text-gray-800">
-                          {item.productName}
-                        </h2>
-                        <p className="text-sm text-gray-600">
-                          LKR {item.price.toFixed(2)} × {item.quantity}
-                        </p>
-                      </div>
-
-                      <div className="font-bold text-gray-800">
-                        LKR {(item.price * item.quantity).toFixed(2)}
-                      </div>
-                    </div>
-                  ))}
+                {/* Items Table */}
+                <div className="flex-1 overflow-y-auto p-4">
+                  <table className="w-full border-collapse text-sm">
+                    <thead>
+                      <tr style={{ backgroundColor: "#FFC0D3" }}>
+                        <th className="p-2">Product</th>
+                        <th className="p-2">Quantity</th>
+                        <th className="p-2">Price</th>
+                        <th className="p-2">Subtotal</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {displayingOrder.billItems && displayingOrder.billItems.length > 0 ? (
+                        displayingOrder.billItems.map((item, index) => (
+                          <tr key={index} className="text-center border-b" style={{ borderColor: "#FFC0D3" }}>
+                            <td className="p-2 flex items-center gap-2">
+                              <img src={item.image} alt={item.productName} className="w-12 h-12 object-cover rounded-md" />
+                              {item.productName}
+                            </td>
+                            <td className="p-2">{item.quantity}</td>
+                            <td className="p-2">{item.price.toFixed(2)}</td>
+                            <td className="p-2">{(item.price * item.quantity).toFixed(2)}</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={4} className="text-center py-4 text-gray-600">
+                            No items in this order
+                          </td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
                 </div>
 
                 {/* Footer */}

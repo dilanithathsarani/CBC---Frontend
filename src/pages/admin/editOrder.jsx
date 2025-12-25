@@ -18,11 +18,12 @@ export default function EditOrderForm() {
   const [email, setEmail] = useState(order.email);
   const [address, setAddress] = useState(order.address);
   const [phoneNumber, setPhoneNumber] = useState(order.phoneNumber);
-  const [billItems, setBillItems] = useState(order.billItems);
-  const [total, setTotal] = useState(order.total);
+  const [billItems, setBillItems] = useState(order.billItems || []);
+  const [total, setTotal] = useState(order.total || 0);
   const [allProducts, setAllProducts] = useState([]);
   const [selectedProductId, setSelectedProductId] = useState("");
 
+  // Fetch all products
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -40,54 +41,56 @@ export default function EditOrderForm() {
     fetchProducts();
   }, []);
 
-  const recalcTotal = (items) => {
-    const newTotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    setTotal(newTotal);
-  };
-
+  // Handle quantity change
   const handleQuantityChange = (index, quantity) => {
     const newBillItems = [...billItems];
+    const oldQuantity = newBillItems[index].quantity;
     newBillItems[index].quantity = Number(quantity);
     setBillItems(newBillItems);
-    recalcTotal(newBillItems);
+
+    const diff = (Number(quantity) - oldQuantity) * newBillItems[index].price;
+    setTotal((prevTotal) => prevTotal + diff);
   };
 
+  // Remove product
   const handleRemoveProduct = (index) => {
+    const removedItem = billItems[index];
     const newBillItems = [...billItems];
     newBillItems.splice(index, 1);
     setBillItems(newBillItems);
-    recalcTotal(newBillItems);
+    setTotal((prevTotal) => prevTotal - removedItem.price * removedItem.quantity);
   };
 
+  // Add product
   const handleAddProduct = () => {
     if (!selectedProductId) return toast.error("Select a product to add");
+
     const product = allProducts.find((p) => p.productId === selectedProductId);
     if (!product) return toast.error("Product not found");
 
     const exists = billItems.find((item) => item.productId === product.productId);
     if (exists) return toast.error("Product already in order");
 
-    const newBillItems = [
-      ...billItems,
-      {
-        productId: product.productId,
-        productName: product.name,
-        quantity: 1,
-        price: product.price,
-        image: product.images[0] || "",
-      },
-    ];
-    setBillItems(newBillItems);
-    recalcTotal(newBillItems);
+    const newItem = {
+      productId: product.productId,
+      productName: product.name,
+      quantity: 1,
+      price: product.price,
+      image: product.images?.[0] || "",
+    };
+
+    setBillItems([...billItems, newItem]);
+    setTotal((prevTotal) => prevTotal + newItem.price);
   };
 
+  // Submit updated order
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem("token");
       await axios.put(
-        import.meta.env.VITE_BACKEND_URL + "/api/order/" + order.orderId,
+        `${import.meta.env.VITE_BACKEND_URL}/api/order/${order.orderId}`,
         { status, name, email, address, phoneNumber, billItems },
-        { headers: { Authorization: "Bearer " + token } }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       toast.success("Order updated successfully");
       navigate("/admin/orders");
@@ -97,11 +100,12 @@ export default function EditOrderForm() {
     }
   };
 
+  // Delete order
   const handleDeleteOrder = async () => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(import.meta.env.VITE_BACKEND_URL + "/api/order/" + order.orderId, {
-        headers: { Authorization: "Bearer " + token },
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/order/${order.orderId}`, {
+        headers: { Authorization: `Bearer ${token}` },
       });
       toast.success("Order deleted successfully");
       navigate("/admin/orders");
@@ -112,32 +116,39 @@ export default function EditOrderForm() {
   };
 
   return (
-    <div className="w-full h-full rounded-lg flex justify-center items-start overflow-auto p-4" style={{ backgroundColor: "#FDEFF4" }}>
-      <div className="w-[520px] h-auto rounded-2xl shadow-xl flex flex-col items-center transition-all duration-300 p-6" style={{ backgroundColor: "#FFFFFF" }}>
-        <h1 className="text-3xl font-bold m-[15px] tracking-wide mt-4" style={{ color: "#C85A87" }}>
+    <div
+      className="w-full h-full flex justify-center items-start overflow-auto p-4"
+      style={{ backgroundColor: "#FDEFF4" }}
+    >
+      <div
+        className="w-[520px] h-auto rounded-2xl shadow-xl flex flex-col items-center p-6"
+        style={{ backgroundColor: "#FFFFFF" }}
+      >
+        <h1 className="text-3xl font-bold my-4" style={{ color: "#C85A87" }}>
           Edit Order
         </h1>
 
         {/* Basic Info */}
-        {[{ value: order.orderId, disabled: true, placeholder: "Order ID" },
+        {[ 
+          { value: order.orderId, disabled: true },
           { value: name, placeholder: "Customer Name", onChange: (e) => setName(e.target.value) },
           { value: email, placeholder: "Customer Email", onChange: (e) => setEmail(e.target.value) },
           { value: address, placeholder: "Address", onChange: (e) => setAddress(e.target.value) },
-          { value: phoneNumber, placeholder: "Phone Number", onChange: (e) => setPhoneNumber(e.target.value) }]
-          .map((field, i) => (
-            <input
-              key={i}
-              {...field}
-              className="w-[400px] h-[50px] rounded-xl text-center m-[6px] border transition-all duration-200 focus:outline-none focus:shadow-md"
-              style={{ borderColor: "#FFC0D3" }}
-            />
-          ))}
+          { value: phoneNumber, placeholder: "Phone Number", onChange: (e) => setPhoneNumber(e.target.value) }
+        ].map((field, i) => (
+          <input
+            key={i}
+            {...field}
+            className="w-[400px] h-[50px] rounded-xl text-center my-2 border focus:outline-none focus:shadow-md"
+            style={{ borderColor: "#FFC0D3" }}
+          />
+        ))}
 
         {/* Status */}
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="w-[400px] h-[50px] rounded-xl text-center m-[6px] border bg-white transition-all duration-200 focus:outline-none focus:shadow-md"
+          className="w-[400px] h-[50px] rounded-xl text-center my-2 border bg-white focus:outline-none focus:shadow-md"
           style={{ borderColor: "#FFC0D3" }}
         >
           <option value="Pending">Pending</option>
@@ -159,7 +170,12 @@ export default function EditOrderForm() {
                 className="w-[60px] h-[30px] text-center rounded-md border"
               />
               <span className="text-sm">Price: {item.price}</span>
-              <button onClick={() => handleRemoveProduct(index)} className="text-red-500 font-bold ml-2">X</button>
+              <button
+                onClick={() => handleRemoveProduct(index)}
+                className="text-red-500 font-bold ml-2"
+              >
+                X
+              </button>
             </div>
           ))}
         </div>
@@ -176,7 +192,9 @@ export default function EditOrderForm() {
               <option key={p.productId} value={p.productId}>{p.name}</option>
             ))}
           </select>
-          <button onClick={handleAddProduct} className="bg-[#FFC0D3] px-4 py-2 rounded-xl">Add</button>
+          <button onClick={handleAddProduct} className="bg-[#FFC0D3] px-4 py-2 rounded-xl">
+            Add
+          </button>
         </div>
 
         {/* Total */}
@@ -184,25 +202,25 @@ export default function EditOrderForm() {
           Total: {total.toFixed(2)}
         </div>
 
-        {/* Buttons */}
-        <div className="w-[400px] h-[100px] flex justify-between items-center mt-6 gap-4">
+        {/* Action Buttons */}
+        <div className="w-[400px] flex justify-between items-center mt-6 gap-4">
           <Link
             to={"/admin/orders"}
-            className="p-[12px] w-[180px] text-center rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-[2px]"
+            className="p-3 w-[120px] text-center rounded-xl shadow-md hover:shadow-lg"
             style={{ backgroundColor: "#FDEFF4", color: "#C85A87" }}
           >
             Cancel
           </Link>
           <button
             onClick={handleSubmit}
-            className="p-[12px] w-[180px] text-center rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-[2px]"
+            className="p-3 w-[120px] text-center rounded-xl shadow-md hover:shadow-lg"
             style={{ backgroundColor: "#FFC0D3", color: "#7A1F3D" }}
           >
             Edit Order
           </button>
           <button
             onClick={handleDeleteOrder}
-            className="p-[12px] w-[180px] text-center rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-[2px]"
+            className="p-3 w-[120px] text-center rounded-xl shadow-md hover:shadow-lg"
             style={{ backgroundColor: "#FF5C5C", color: "#FFFFFF" }}
           >
             Delete
