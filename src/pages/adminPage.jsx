@@ -11,6 +11,7 @@ import Loader from "../components/loader";
 import axios from "axios";
 import toast from "react-hot-toast";
 import EditOrderForm from "./admin/editOrder";
+import AdminUsersPage from "./admin/users";
 
 export default function AdminPage() {
 	const [userValidated, setUserValidated] = useState(false);
@@ -86,17 +87,8 @@ export default function AdminPage() {
         }}
       >
         <Routes path="/*">
-          <Route
-            path="/users"
-            element={
-              <h1
-                className="text-3xl font-bold mb-4"
-                style={{ color: "#524A4E" }}
-              >
-                Users
-              </h1>
-            }
-          />
+         
+          <Route path="/users" element={<AdminUsersPage />} />
           <Route path="/products" element={<AdminProductsPage />} />
           <Route path="/orders" element={<AdminOrdersPage />} />
           <Route path="/addProduct" element={<AddProductForm />} />
