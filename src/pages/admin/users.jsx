@@ -4,12 +4,15 @@ import toast from "react-hot-toast";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { MdOutlineModeEdit } from "react-icons/md";
 import Loader from "../../components/loader";
+import { useNavigate } from "react-router-dom";
 
 export default function AdminUsersPage() {
   const [users, setUsers] = useState([]);
   const [loaded, setLoaded] = useState(false);
   const [search, setSearch] = useState("");
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     if (!loaded) {
@@ -85,9 +88,17 @@ export default function AdminUsersPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <span className="text-[#524A4E] font-medium">
-          Total: {filteredUsers.length}
-        </span>
+        <div className="flex items-center gap-4">
+          <span className="text-[#524A4E] font-medium">
+            Total: {filteredUsers.length}
+          </span>
+          <button
+            onClick={() => navigate("/admin/addAdmin")}
+            className="bg-[#FF5C8D] text-white px-4 py-2 rounded hover:bg-[#FFC0D3] hover:text-[#524A4E] transition inline-block"
+          >
+            Add Admin
+          </button>
+        </div>
       </div>
 
       {loaded ? (
@@ -157,6 +168,7 @@ export default function AdminUsersPage() {
                         className="text-[22px] m-[10px] cursor-pointer"
                         style={{ color: "#C0392B" }}
                       />
+                      
                       <MdOutlineModeEdit
                         onClick={() => toggleStatus(user._id)}
                         className="text-[22px] m-[10px] cursor-pointer"
