@@ -50,7 +50,25 @@ export default function ProductsPage() {
         });
     }
   }
+ useEffect(() => {
+    if (search.trim().length === 0) {
+      loadProducts(selectedCategory || null);
+      return;
+    }
 
+    const delayDebounceFn = setTimeout(() => {
+      setProductsLoaded(false);
+      axios
+        .get(import.meta.env.VITE_BACKEND_URL + "/api/product/search/" + search)
+        .then((res) => {
+          setProductList(res.data.products || res.data);
+          setProductsLoaded(true);
+        })
+        .catch(() => setProductsLoaded(true));
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [search]);
   function filterByCategory(category) {
     setSelectedCategory(category);
     if (!category) {
