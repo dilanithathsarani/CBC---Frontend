@@ -3,6 +3,7 @@ import axios from "axios";
 import { Footer } from "../../components/footer";
 import ProductCard from "../../components/productCard";
 import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function LandingPage() {
   const [products, setProducts] = useState([]);
@@ -21,6 +22,7 @@ export default function LandingPage() {
       .then((res) => setReviews(res.data))
       .catch((err) => console.error(err));
   }, []);
+  const trendingProducts = products.slice(0, 4);
 
   const reviewsPerSlide = 3;
   const totalSlides = Math.ceil(reviews.length / reviewsPerSlide);
@@ -31,14 +33,26 @@ export default function LandingPage() {
       setCurrentReviewIndex((prev) =>
         prev === totalSlides - 1 ? 0 : prev + 1
       );
-    }, 4000);
+    }, 6000);
     return () => clearInterval(interval);
-  }, [reviews,totalSlides]);
+  }, [reviews, totalSlides]);
 
   const slides = [];
   for (let i = 0; i < reviews.length; i += reviewsPerSlide) {
     slides.push(reviews.slice(i, i + reviewsPerSlide));
   }
+
+  const categories = [
+    { name: "Skincare", image: "/icons/skincare.png" },
+    { name: "Makeup", image: "/icons/makeup.png" },
+    { name: "Haircare", image: "/icons/haircare.png" },
+    { name: "Accessories", image: "/icons/accessories.png" },
+  ];
+
+  // Navigate to Products page with category filter
+  const handleCategoryClick = (category) => {
+    navigate(`/products?category=${encodeURIComponent(category)}`);
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FDEFF4]">
@@ -71,12 +85,51 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Featured Products */}
+        {/* Category Section */}
         <section>
           <h2 className="text-3xl font-bold text-[#FF5C8D] mb-6 text-center">
+            Shop by Category
+          </h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+            {categories.map((cat, idx) => (
+              <div
+                key={idx}
+                onClick={() => handleCategoryClick(cat.name)}
+                className="cursor-pointer flex flex-col items-center gap-2 p-4 rounded-2xl bg-white shadow hover:scale-105 transition"
+              >
+                <img
+                  src={cat.image}
+                  alt={cat.name}
+                  className="w-30 h-30 object-contain"
+                />
+                <span className="text-[#FF5C8D] font-semibold">{cat.name}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Featured Products */}
+        <section>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#FF5C8D] mb-6 text-center">
             Featured Products
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+
+          {/* Mobile Scrollable with Snap */}
+          <div className="sm:hidden overflow-x-auto px-4 scroll-smooth">
+            <div className="flex gap-4">
+              {products.map((product) => (
+                <div
+                  key={product.productId}
+                  className="flex-shrink-0 w-64 snap-start"
+                >
+                  <ProductCard product={product} className="rounded-none" />
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Grid for tablet/desktop */}
+          <div className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-6">
             {products.map((product) => (
               <ProductCard
                 key={product.productId}
@@ -87,134 +140,186 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Categories */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
-          <div
-            onClick={() => navigate(`/products?category=Skincare`)}
-            className="bg-[#FFC0D3]/20 p-6 rounded-2xl text-center hover:scale-105 transition"
-          >
-            <h3 className="text-[#FF5C8D] font-semibold text-lg">Skincare</h3>
-          </div>
-          <div
-            onClick={() => navigate(`/products?category=Makeup`)}
-            className="bg-[#FFC0D3]/20 p-6 rounded-2xl text-center hover:scale-105 transition"
-          >
-            <h3 className="text-[#FF5C8D] font-semibold text-lg">Makeup</h3>
-          </div>
-          <div
-            onClick={() => navigate(`/products?category=Haircare`)}
-            className="bg-[#FFC0D3]/20 p-6 rounded-2xl text-center hover:scale-105 transition"
-          >
-            <h3 className="text-[#FF5C8D] font-semibold text-lg">Hair Care</h3>
-          </div>
-          <div
-            onClick={() => navigate(`/products?category=Accessories`)}
-            className="bg-[#FFC0D3]/20 p-6 rounded-2xl text-center hover:scale-105 transition"
-          >
-            <h3 className="text-[#FF5C8D] font-semibold text-lg">
-              Accessories
-            </h3>
-          </div>
+       {/* Trending Products Carousel */}
+<section className="py-12 bg-[#FFFAFA] rounded-2xl">
+  <h2 className="text-2xl sm:text-3xl font-bold text-[#FF5C8D] mb-6 text-center">
+    Trending Products
+  </h2>
+
+  {/* Mobile Scrollable */}
+  <div className="sm:hidden overflow-x-auto px-4 scroll-smooth">
+    <div className="flex gap-4">
+      {trendingProducts.map((product) => (
+        <div key={product.productId} className="flex-shrink-0 w-64 snap-start">
+          <ProductCard product={product} className="rounded-none" />
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {/* Grid for tablet/desktop */}
+  <div className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-6">
+    {trendingProducts.map((product) => (
+      <ProductCard
+        key={product.productId}
+        product={product}
+        className="transition transform hover:scale-105 hover:shadow-xl"
+      />
+    ))}
+  </div>
+</section>
+
+        {/* Feature Highlights */}
+        <section className="py-12 max-w-6xl mx-auto px-10 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          {[
+            {
+              icon: "/icons/freeshipping.png",
+              title: "Free Shipping",
+              desc: "On orders above LKR.6000/=",
+            },
+            {
+              icon: "/icons/premiumquality.png",
+              title: "Premium Quality",
+              desc: "Best ingredients for your skin",
+            },
+            {
+              icon: "/icons/24support.png",
+              title: "24/7 Support",
+              desc: "Always here to help you",
+            },
+            {
+              icon: "/icons/easyreturns.png",
+              title: "Easy Returns",
+              desc: "Hassle-free returns within 30 days",
+            },
+          ].map((feature, idx) => (
+            <div
+              key={idx}
+              className="bg-white p-6 rounded-2xl shadow hover:scale-105 transition"
+            >
+              <img
+                src={feature.icon}
+                alt={feature.title}
+                className="mx-auto mb-4 w-30 h-30 object-contain"
+              />
+              <h3 className="font-semibold text-lg text-[#FF5C8D]">
+                {feature.title}
+              </h3>
+              <p className="text-sm text-[#524A4E] mt-2">{feature.desc}</p>
+            </div>
+          ))}
         </section>
 
-        {/* Special Offers */}
-        <section className="bg-[#FF5C8D]/10 p-8 rounded-2xl text-center">
+        {/* Newsletter / Beauty Club Signup */}
+        <section className="py-12 bg-[#FF5C8D]/10 rounded-2xl text-center px-6 mx-auto max-w-3xl">
           <h2 className="text-3xl font-bold text-[#FF5C8D] mb-4">
-            Special Offers
+            Join Our Beauty Club
           </h2>
           <p className="text-[#524A4E] mb-6">
-            Get up to 30% off on selected items!
+            Subscribe to get exclusive offers, tips, and early access to new
+            products.
           </p>
-          <button
-            onClick={() => navigate("/products")}
-            className="bg-[#FF5C8D] hover:bg-[#FFC0D3] text-white hover:text-[#524A4E] px-6 py-3 rounded-full font-semibold shadow transition"
-          >
-            Grab Deals
-          </button>
+          <form className="flex flex-col sm:flex-row justify-center gap-4">
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="p-3 rounded-full border border-gray-300 flex-1 focus:outline-none focus:ring-2 focus:ring-[#FF5C8D]"
+            />
+            <button className="bg-[#FF5C8D] hover:bg-[#FFC0D3] text-white px-6 py-3 rounded-full font-semibold transition">
+              Subscribe
+            </button>
+          </form>
         </section>
 
         {/* Customer Reviews */}
-  {/* Customer Reviews - ROTATING */}
-<section className="text-center">
-  <h2 className="text-3xl font-bold text-[#FF5C8D] mb-6 text-center">
-    What Our Customers Say
-  </h2>
-  {reviews.length > 0 && (
-    <div className="overflow-hidden max-w-6xl mx-auto relative">
-      {/* Slide container */}
-      <div
-        className="flex transition-transform duration-700 ease-in-out"
-        style={{
-          width: `${totalSlides * 100}%`,
-          transform: `translateX(-${currentReviewIndex * 100}%)`,
-        }}
-      >
-        {slides.map((slide, idx) => (
-          <div
-            key={idx}
-            className="flex justify-center gap-6 flex-none w-full"
-          >
-            {slide.map((review, index) => (
+        <section className="text-center">
+          <h2 className="text-3xl font-bold text-[#FF5C8D] mb-6">
+            What Our Customers Say
+          </h2>
+
+          {reviews.length > 0 && (
+            <div className="relative max-w-6xl mx-auto overflow-hidden">
               <div
-                key={index}
-                className="bg-white rounded-2xl p-6 shadow-md w-1/3 min-w-[200px]"
+                className="flex transition-transform duration-500 ease-in-out gap-4"
+                style={{
+                  transform: `translateX(-${currentReviewIndex * 100}%)`,
+                }}
               >
-                <h3 className="text-[#524A4E] font-bold mb-2">{review.name}</h3>
-                <div className="flex gap-1 justify-center text-[#FF5C8D] mb-2">
-                  {[...Array(5)].map((_, i) => (
-                    <span
-                      key={i}
-                      className={i < review.rating ? "opacity-100" : "opacity-30"}
-                    >
-                      ★
-                    </span>
-                  ))}
-                </div>
-                <p className="text-[#524A4E] text-sm">{review.comment}</p>
+                {slides.map((slide, idx) => (
+                  <div
+                    key={idx}
+                    className="flex justify-center gap-4 w-full flex-shrink-0"
+                  >
+                    {slide.map((review, index) => (
+                      <div
+                        key={index}
+                        className="bg-white rounded-2xl p-4 shadow-md w-1/4 min-w-[180px]"
+                      >
+                        <h3 className="text-[#524A4E] font-semibold mb-1 text-sm">
+                          {review.name}
+                        </h3>
+                        <div className="flex gap-1 justify-center text-[#FF5C8D] mb-1 text-sm">
+                          {[...Array(5)].map((_, i) => (
+                            <span
+                              key={i}
+                              className={
+                                i < review.rating ? "opacity-100" : "opacity-30"
+                              }
+                            >
+                              ★
+                            </span>
+                          ))}
+                        </div>
+                        <p className="text-[#524A4E] text-xs">
+                          {review.comment}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        ))}
-      </div>
 
-      {/* Prev/Next buttons */}
-      <button
-        onClick={() =>
-          setCurrentReviewIndex(
-            currentReviewIndex === 0 ? totalSlides - 1 : currentReviewIndex - 1
-          )
-        }
-        className="absolute top-1/2 left-0 -translate-y-1/2 bg-[#FF5C8D]/20 p-2 rounded-full hover:bg-[#FF5C8D] transition"
-      >
-        ‹
-      </button>
-      <button
-        onClick={() =>
-          setCurrentReviewIndex(
-            currentReviewIndex === totalSlides - 1 ? 0 : currentReviewIndex + 1
-          )
-        }
-        className="absolute top-1/2 right-0 -translate-y-1/2 bg-[#FF5C8D]/20 p-2 rounded-full hover:bg-[#FF5C8D] transition"
-      >
-        ›
-      </button>
+              <button
+                onClick={() =>
+                  setCurrentReviewIndex(
+                    currentReviewIndex === 0
+                      ? totalSlides - 1
+                      : currentReviewIndex - 1
+                  )
+                }
+                className="absolute top-1/3 left-0 -translate-y-1/2 bg-[#FF5C8D]/20 p-2 rounded-full hover:bg-[#FF5C8D] transition"
+              >
+                ‹
+              </button>
+              <button
+                onClick={() =>
+                  setCurrentReviewIndex(
+                    currentReviewIndex === totalSlides - 1
+                      ? 0
+                      : currentReviewIndex + 1
+                  )
+                }
+                className="absolute top-1/3 right-0 -translate-y-1/2 bg-[#FF5C8D]/20 p-2 rounded-full hover:bg-[#FF5C8D] transition"
+              >
+                ›
+              </button>
 
-      {/* Dots */}
-      <div className="flex justify-center mt-4 gap-2">
-        {Array.from({ length: totalSlides }).map((_, index) => (
-          <span
-            key={index}
-            className={`w-3 h-3 rounded-full cursor-pointer ${
-              index === currentReviewIndex ? "bg-[#FF5C8D]" : "bg-gray-300"
-            }`}
-            onClick={() => setCurrentReviewIndex(index)}
-          ></span>
-        ))}
-      </div>
-    </div>
-  )}
-</section>
-
+              <div className="flex justify-center mt-4 gap-2">
+                {Array.from({ length: totalSlides }).map((_, index) => (
+                  <span
+                    key={index}
+                    className={`w-3 h-3 rounded-full cursor-pointer ${
+                      index === currentReviewIndex
+                        ? "bg-[#FF5C8D]"
+                        : "bg-gray-300"
+                    }`}
+                    onClick={() => setCurrentReviewIndex(index)}
+                  ></span>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
 
         {/* Call to Action */}
         <section className="text-center py-16 bg-[#FFC0D3]/20 rounded-2xl mb-6">

@@ -8,99 +8,59 @@ import { Footer } from "../../components/footer";
 
 export default function ProductsPage() {
   const [productList, setProductList] = useState([]);
-  const [productsLoaded, setProductsLoaded] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [search, setSearch] = useState("");
-  const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState("");
+
   const location = useLocation();
   const navigate = useNavigate();
-
   const queryParams = new URLSearchParams(location.search);
-  const category = queryParams.get("category");
+  const category = queryParams.get("category") || "";
 
-  function loadProducts(cat = null) {
-    setProductsLoaded(false);
-    axios
-      .get(import.meta.env.VITE_BACKEND_URL + "/api/product/", {
-        params: cat ? { category: cat } : {},
-      })
-      .then((res) => {
-        setProductList(res.data);
-        setProductsLoaded(true);
-      })
-      .catch(() => {
-        setProductsLoaded(true);
-      });
-  }
+  // Load products based on category and search
+  const fetchProducts = async (searchText = "", filterCategory = "") => {
+    setLoading(true);
+    try {
+      let url = import.meta.env.VITE_BACKEND_URL + "/api/product";
+      if (searchText.trim()) {
+        url = import.meta.env.VITE_BACKEND_URL + "/api/product/search/" + encodeURIComponent(searchText);
+      } else if (filterCategory) {
+        url += "?category=" + encodeURIComponent(filterCategory);
+      }
 
+      const res = await axios.get(url);
+      setProductList(res.data.products || res.data);
+    } catch (err) {
+      console.error(err);
+      setProductList([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Fetch whenever category changes
   useEffect(() => {
-    loadProducts(category);
-    setSelectedCategory(category || "");
+    fetchProducts(search, category);
   }, [category]);
 
-  function searchProducts() {
-    if (search.trim().length == 0) return;
-    setProductsLoaded(false);
-    {
-      axios
-        .get(import.meta.env.VITE_BACKEND_URL + "/api/product/search/" + search)
-        .then((res) => {
-          setProductList(res.data.products);
-          setProductsLoaded(true);
-        });
-    }
-  }
- useEffect(() => {
-    if (search.trim().length === 0) {
-      loadProducts(selectedCategory || null);
-      return;
-    }
-
-    const delayDebounceFn = setTimeout(() => {
-      setProductsLoaded(false);
-      axios
-        .get(import.meta.env.VITE_BACKEND_URL + "/api/product/search/" + search)
-        .then((res) => {
-          setProductList(res.data.products || res.data);
-          setProductsLoaded(true);
-        })
-        .catch(() => setProductsLoaded(true));
+  // Debounced search effect
+  useEffect(() => {
+    const delay = setTimeout(() => {
+      fetchProducts(search, category);
     }, 300);
 
-    return () => clearTimeout(delayDebounceFn);
-  }, [search]);
-  function filterByCategory(category) {
-    setSelectedCategory(category);
-    if (!category) {
-      setProductsLoaded(false);
-    } else {
-      axios
-        .get(import.meta.env.VITE_BACKEND_URL + "/api/product/")
-        .then((res) => {
-          setProductList(res.data.filter((p) => p.category === category));
-        });
-    }
-  }
+    return () => clearTimeout(delay);
+  }, [search, category]);
+
+  // Reset search & category
+  const resetFilters = () => {
+    setSearch("");
+    navigate("/products", { replace: true });
+  };
 
   return (
-    <div className="min-h-screen flex flex-col w-full bg-[#FDEFF4] ">
-      <div className="w-full max-w-4xl mx-auto flex flex-wrap justify-center gap-3 mb-6">
-        {categories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => filterByCategory(cat)}
-            className={`px-4 py-2 rounded-lg font-medium ${
-              selectedCategory === cat
-                ? "bg-[#FF5C8D] text-white"
-                : "bg-white text-[#524A4E] border border-[#FF5C8D]"
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
+    <div className="min-h-screen flex flex-col w-full bg-[#FDEFF4]">
       {/* Search Section */}
-      <div className="w-full max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+      <div className="w-full max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 mb-10 mt-8 px-4">
         <div className="relative w-full sm:w-[320px]">
           <input
             type="text"
@@ -119,58 +79,60 @@ export default function ProductsPage() {
         </div>
 
         <button
-          onClick={searchProducts}
+          onClick={() => fetchProducts(search, category)}
           className="bg-[#FF5C8D] text-white font-medium px-5 py-2 rounded-lg hover:opacity-90 transition shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
         >
           Search
         </button>
 
         <button
-          onClick={() => {
-            setSearch("");
-            setSelectedCategory("");
-            navigate("/products", { replace: true });
-            loadProducts();
-          }}
+          onClick={resetFilters}
           className="bg-white text-[#524A4E] font-medium px-5 py-2 rounded-lg border border-[#FF5C8D] hover:bg-[#FF5C8D] hover:text-white transition shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
         >
           Reset
         </button>
       </div>
 
-      {category && (
-        <div className="w-full max-w-4xl mx-auto mb-6 flex justify-start">
+      {/* Category Buttons */}
+      <div className="flex gap-4 justify-center flex-wrap mb-6">
+        {["Skincare", "Makeup", "Haircare", "Accessories"].map((cat) => (
           <button
+            key={cat}
             onClick={() => {
-              navigate("/products");
-              loadProducts();
+              navigate(`/products?category=${encodeURIComponent(cat)}`);
             }}
-            className="bg-white text-[#FF5C8D] border border-[#FF5C8D] px-4 py-2 rounded-lg hover:bg-[#FF5C8D] hover:text-white transition"
+            className={`px-4 py-2 rounded-full transition ${
+              cat === category
+                ? "bg-[#FF5C8D] text-white"
+                : "bg-white text-[#FF5C8D] border border-[#FF5C8D] hover:bg-[#FFC0D3]"
+            }`}
           >
-            All
+            {cat}
           </button>
-        </div>
-      )}
+        ))}
+      </div>
 
-      {productsLoaded ? (
-        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 place-items-center p-6">
-          {productList.map((product) => (
-            <ProductCard
-              key={product.productId}
-              product={product}
-              className="shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
-            />
-          ))}
-          {productList.length === 0 && (
+      {/* Products Grid */}
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 place-items-center p-6">
+          {productList.length ? (
+            productList.map((product) => (
+              <ProductCard
+                key={product.productId}
+                product={product}
+                className="shadow-[0_4px_12px_rgba(0,0,0,0.1)]"
+              />
+            ))
+          ) : (
             <p className="text-[#524A4E] text-xl col-span-full text-center">
-              No products found in this category.
+              No products found.
             </p>
           )}
         </div>
-      ) : (
-        <Loader />
       )}
-      <Footer/>
+      <Footer />
     </div>
   );
 }

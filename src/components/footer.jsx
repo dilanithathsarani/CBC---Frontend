@@ -2,7 +2,7 @@ import { FaFacebookF, FaInstagram, FaTwitter } from "react-icons/fa";
 
 export function Footer() {
     return (
-        <footer className="w-full bg-[#FF5C8D] text-white py-8">
+        <footer className="w-full bg-[#FF5C8D] text-white py-8 relative bottom-0 mt-10">
             <div className="max-w-7xl mx-auto px-4">
 
                 {/* Columns */}

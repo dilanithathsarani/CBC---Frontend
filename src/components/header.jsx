@@ -45,6 +45,24 @@ export default function Header() {
             <Link to="/contact" className="text-xl text-[#524A4E] my-4 hover:text-[#FF5C8D] transition-colors" onClick={() => setIsOpen(false)}>Contact us</Link>
             <Link to="/reviews" className="text-xl text-[#524A4E] my-4 hover:text-[#FF5C8D] transition-colors" onClick={() => setIsOpen(false)}>Reviews</Link>
             <Link to="/cart" className="text-xl text-[#524A4E] my-4 hover:text-[#FF5C8D] transition-colors" onClick={() => setIsOpen(false)}>Cart</Link>
+
+            {/* Sign In / Sign Up Buttons for Mobile */}
+            <div className="flex flex-col w-full mt-6 gap-3">
+              <Link
+                to="/login"
+                onClick={() => setIsOpen(false)}
+                className="w-full text-center bg-[#FF5C8D] text-white py-2 rounded-full font-semibold hover:bg-[#FFC0D3] transition"
+              >
+                Sign In
+              </Link>
+              <Link
+                to="/register"
+                onClick={() => setIsOpen(false)}
+                className="w-full text-center bg-white border border-[#FF5C8D] text-[#FF5C8D] py-2 rounded-full font-semibold hover:bg-[#FF5C8D] hover:text-white transition"
+              >
+                Sign Up
+              </Link>
+            </div>
           </div>
         </div>
       )}
