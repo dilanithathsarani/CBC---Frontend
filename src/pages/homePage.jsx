@@ -7,10 +7,12 @@ import CheckoutPage from "./client/checkout";
 import ReviewPage from "./client/review";
 import ContactPage from "./client/contact";
 import LandingPage from "./client/landingPage";
+import ScrollToTop from "../components/ScrollToTop";
 
 export default function HomePage(){
     return(
         <div className="w-full h-screen">
+            <ScrollToTop/>
             <Header/>
             <div className="w-full h-[calc(100vh-70px)] min-h-[calc(100vh-70px)]">
                 <Routes path="/*">
