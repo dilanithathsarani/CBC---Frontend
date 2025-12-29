@@ -22,7 +22,7 @@ export default function ProductCard({ product }) {
         <p className="text-lg font-bold text-[#FF5C8D]">
           LKR.{product.price.toFixed(2)}{' '}
           {product.price < product.labeledPrice && (
-            <span className="line-through text-sm text-[#FDEFF4] ml-2">
+            <span className="line-through text-sm text-gray-400 ml-2">
               LKR.{product.labeledPrice.toFixed(2)}
             </span>
           )}

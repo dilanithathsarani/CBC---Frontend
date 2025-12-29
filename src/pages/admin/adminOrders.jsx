@@ -46,7 +46,8 @@ export default function AdminOrdersPage() {
     (order.orderId + " " + order.name + " " + order.email)
       .toLowerCase()
       .includes(search.toLowerCase())
-  );
+  )
+  .sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
     <div
