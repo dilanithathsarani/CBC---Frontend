@@ -43,7 +43,7 @@ export default function ProductsPage() {
   // Fetch products whenever URL changes (category) OR search changes
   useEffect(() => {
     if (search.trim()) {
-      fetchProducts(search, ""); // search overrides category
+      fetchProducts(search, ""); 
     } else {
       fetchProducts("", category);
     }
@@ -107,7 +107,9 @@ export default function ProductsPage() {
                 if (isAll) {
                   navigate("/products", { replace: true });
                 } else {
-                  navigate(`/products?category=${encodeURIComponent(cat)}`, { replace: true });
+                  navigate(`/products?category=${encodeURIComponent(cat)}`, {
+                    replace: true,
+                  });
                 }
               }}
               className={`px-4 py-2 rounded-full transition ${

@@ -47,16 +47,24 @@ export default function ForgetPassword() {
   }
 
   return (
-    <div className="w-full h-screen flex justify-center items-center
-                    bg-gradient-to-r from-[#FDEFF4] via-[#FFC0D3] to-[#FF5C8D] p-6">
-      <div className="w-full max-w-md py-8 px-6 bg-transparent flex flex-col items-center
+    <div
+      className="w-full h-screen flex justify-center items-center
+                    bg-gradient-to-r from-[#FDEFF4] via-[#FFC0D3] to-[#FF5C8D] p-6"
+    >
+      <div
+        className="w-full max-w-md py-8 px-6 bg-transparent flex flex-col items-center
                       border-2 border-[#DC143C] rounded-2xl shadow-[0_0_20px_rgba(220,20,60,0.4)]
-                      backdrop-blur-lg">
+                      backdrop-blur-lg"
+      >
         {!emailSent ? (
           <>
-            <h1 className="text-3xl font-bold text-[#DC143C] mb-6">Forget Password</h1>
+            <h1 className="text-3xl font-bold text-[#DC143C] mb-6">
+              Forget Password
+            </h1>
             <div className="w-full mb-4">
-              <label className="block text-sm font-medium text-[#86003C] mb-1">Email</label>
+              <label className="block text-sm font-medium text-[#86003C] mb-1">
+                Email
+              </label>
               <input
                 type="email"
                 value={email}
@@ -73,9 +81,13 @@ export default function ForgetPassword() {
           </>
         ) : (
           <>
-            <h1 className="text-3xl font-bold text-[#DC143C] mb-6">Reset Password</h1>
+            <h1 className="text-3xl font-bold text-[#DC143C] mb-6">
+              Reset Password
+            </h1>
             <div className="w-full mb-4">
-              <label className="block text-sm font-medium text-[#86003C] mb-1">OTP</label>
+              <label className="block text-sm font-medium text-[#86003C] mb-1">
+                OTP
+              </label>
               <input
                 type="text"
                 value={otp}
@@ -84,7 +96,9 @@ export default function ForgetPassword() {
               />
             </div>
             <div className="w-full mb-4">
-              <label className="block text-sm font-medium text-[#86003C] mb-1">New Password</label>
+              <label className="block text-sm font-medium text-[#86003C] mb-1">
+                New Password
+              </label>
               <input
                 type="password"
                 value={password}
@@ -93,7 +107,9 @@ export default function ForgetPassword() {
               />
             </div>
             <div className="w-full mb-4">
-              <label className="block text-sm font-medium text-[#86003C] mb-1">Confirm Password</label>
+              <label className="block text-sm font-medium text-[#86003C] mb-1">
+                Confirm Password
+              </label>
               <input
                 type="password"
                 value={confirmPassword}

@@ -93,7 +93,7 @@ export default function AdminPage() {
               <Route path="/addProduct" element={<AddProductForm />} />
               <Route path="/editProduct" element={<EditProductForm />} />
               <Route path="/editOrder" element={<EditOrderForm />} />
-              <Route path="/addAdmin" element={<AddAdminPage />} /> 
+              <Route path="/addAdmin" element={<AddAdminPage />} />
             </Routes>
           </div>
         </>

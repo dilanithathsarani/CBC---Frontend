@@ -90,21 +90,20 @@ export default function AddAdminPage() {
 
         <div className="w-[400px] h-[100px] flex justify-between items-center mt-6 mb-8">
           <Link
-  to={"/admin/users"}
-  className="p-[12px] w-[180px] text-center rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-[2px]"
-  style={{ backgroundColor: "#FDEFF4", color: "#C85A87" }}
->
-  Cancel
-</Link>
+            to={"/admin/users"}
+            className="p-[12px] w-[180px] text-center rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-[2px]"
+            style={{ backgroundColor: "#FDEFF4", color: "#C85A87" }}
+          >
+            Cancel
+          </Link>
 
-<button
-  onClick={handleCreateAdmin}
-  className="p-[12px] w-[180px] text-center rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-[2px]"
-  style={{ backgroundColor: "#FFC0D3", color: "#7A1F3D" }}
->
-  Create Admin
-</button>
-
+          <button
+            onClick={handleCreateAdmin}
+            className="p-[12px] w-[180px] text-center rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:-translate-y-[2px]"
+            style={{ backgroundColor: "#FFC0D3", color: "#7A1F3D" }}
+          >
+            Create Admin
+          </button>
         </div>
       </div>
     </div>

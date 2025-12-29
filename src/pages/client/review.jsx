@@ -191,7 +191,7 @@ export default function ReviewPage() {
           </div>
         )}
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

@@ -68,12 +68,18 @@ export default function LoginPage() {
         />
       </div>
 
-      <div className="w-full md:w-1/2 flex justify-center items-center
-                      bg-gradient-to-r from-[#FDEFF4] via-[#FFC0D3] to-[#FF5C8D] p-6">
-        <div className="w-full max-w-md py-8 px-6 bg-transparent flex flex-col items-center
+      <div
+        className="w-full md:w-1/2 flex justify-center items-center
+                      bg-gradient-to-r from-[#FDEFF4] via-[#FFC0D3] to-[#FF5C8D] p-6"
+      >
+        <div
+          className="w-full max-w-md py-8 px-6 bg-transparent flex flex-col items-center
                          rounded-2xl shadow-[0_0_20px_rgba(220,20,60,0.4)]
-                        backdrop-blur-lg">
-          <h1 className="text-3xl font-bold text-center mb-6 text-[#DC143C]">Welcome Back</h1>
+                        backdrop-blur-lg"
+        >
+          <h1 className="text-3xl font-bold text-center mb-6 text-[#DC143C]">
+            Welcome Back
+          </h1>
 
           <input
             onChange={(e) => setEmail(e.target.value)}
@@ -93,7 +99,9 @@ export default function LoginPage() {
             onClick={handleLogin}
             disabled={loadingLogin}
             className={`w-full h-[50px] text-white rounded-xl font-semibold transition-all ${
-              loadingLogin ? "bg-[#FDEFF4] cursor-not-allowed" : "bg-[#DC143C] hover:bg-[#F75270]"
+              loadingLogin
+                ? "bg-[#FDEFF4] cursor-not-allowed"
+                : "bg-[#DC143C] hover:bg-[#F75270]"
             }`}
           >
             {loadingLogin ? "Loading..." : "Login"}
@@ -103,7 +111,9 @@ export default function LoginPage() {
             onClick={loginWithGoogle}
             disabled={loadingGoogle}
             className={`w-full h-[50px] text-white rounded-xl mt-4 flex items-center justify-center gap-2 transition-all ${
-              loadingGoogle ? "bg-[#FDEFF4] cursor-not-allowed" : "bg-[#F75270] hover:bg-[#DC143C]"
+              loadingGoogle
+                ? "bg-[#FDEFF4] cursor-not-allowed"
+                : "bg-[#F75270] hover:bg-[#DC143C]"
             }`}
           >
             <GrGoogle /> {loadingGoogle ? "Loading..." : "Login with Google"}
@@ -111,7 +121,10 @@ export default function LoginPage() {
 
           <p className="text-center mt-6 text-gray-600">
             Don't have an account?{" "}
-            <Link to="/register" className="text-[#F75270] hover:text-[#DC143C]">
+            <Link
+              to="/register"
+              className="text-[#F75270] hover:text-[#DC143C]"
+            >
               Register Now
             </Link>
           </p>

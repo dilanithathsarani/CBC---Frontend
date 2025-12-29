@@ -42,12 +42,13 @@ export default function AdminOrdersPage() {
         setLoaded(false);
       });
   }
-  const filteredOrders = orders.filter((order) =>
-    (order.orderId + " " + order.name + " " + order.email)
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  )
-  .sort((a, b) => new Date(b.date) - new Date(a.date));
+  const filteredOrders = orders
+    .filter((order) =>
+      (order.orderId + " " + order.name + " " + order.email)
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    )
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
 
   return (
     <div
@@ -73,87 +74,90 @@ export default function AdminOrdersPage() {
         <div>
           <div className="rounded-lg bg-white shadow-lg border border-[#FFC0D3] pb-4">
             <div className="max-h-[65vh] overflow-y-auto">
-            <table className="w-full border-collapse">
-              <thead className="sticky top-0 z-10" style={{ backgroundColor: "#FFC0D3" }}>
-                <tr
-                  className="text-gray-800"
+              <table className="w-full border-collapse">
+                <thead
+                  className="sticky top-0 z-10"
                   style={{ backgroundColor: "#FFC0D3" }}
                 >
-                  <th className="p-3">Order ID</th>
-                  <th className="p-3">Customer Email</th>
-                  <th className="p-3">Customer Name</th>
-                  <th className="p-3">Address</th>
-                  <th className="p-3">Phone Number</th>
-                  <th className="p-3">Status</th>
-                  <th className="p-3">Total</th>
-                  <th className="p-3">Date</th>
-                  <th className="p-3">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredOrders.map((order) => (
                   <tr
-                    key={order.orderId}
-                    className="text-center cursor-pointer border-b"
-                    style={{ borderColor: "#FFC0D3" }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.backgroundColor = "#FFF7FA")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.backgroundColor = "transparent")
-                    }
+                    className="text-gray-800"
+                    style={{ backgroundColor: "#FFC0D3" }}
                   >
-                    <td className="p-3">{order.orderId}</td>
-                    <td className="p-3">{order.email}</td>
-                    <td className="p-3">{order.name}</td>
-                    <td className="p-3">{order.address}</td>
-                    <td className="p-3">{order.phoneNumber}</td>
-                    <td className="p-3">
-                      <select
-                        value={order.status}
-                        className="z-[50]"
-                        onChange={(e) =>
-                          changeOrderStatus(order.orderId, e.target.value)
-                        }
-                      >
-                        <option value={"Pending"}>Pending</option>
-                        <option value={"Delivered"}>Delivered</option>
-                        <option value={"Cancelled"}>Cancelled</option>
-                        <option value={"Processing"}>Processing</option>
-                      </select>
-                    </td>
-                    <td className="p-3">{order.total.toFixed(2)}</td>
-                    <td className="p-3">
-                      {new Date(order.date).toDateString()}
-                    </td>
-                    <td className="p-3 flex flex-col items-center justify-center gap-2">
-                      <button
-                        className="bg-gray-700 text-white p-2 rounded-lg hover:opacity-90"
-                        onClick={() => {
-                          setModalIsDisplaying(true);
-                          setDisplayingOrder(order);
-                        }}
-                      >
-                        Details
-                      </button>
-                      <MdOutlineModeEdit
-                        onClick={() =>
-                          navigate("/admin/editOrder", { state: order })
-                        }
-                        className="text-[22px] m-[2px] cursor-pointer text-[#6D214F]"
-                      />
-                    </td>
+                    <th className="p-3">Order ID</th>
+                    <th className="p-3">Customer Email</th>
+                    <th className="p-3">Customer Name</th>
+                    <th className="p-3">Address</th>
+                    <th className="p-3">Phone Number</th>
+                    <th className="p-3">Status</th>
+                    <th className="p-3">Total</th>
+                    <th className="p-3">Date</th>
+                    <th className="p-3">Actions</th>
                   </tr>
-                ))}
-                {filteredOrders.length === 0 && (
-                <tr>
-                  <td colSpan={9} className="text-center p-6 text-gray-500">
-                    No orders found.
-                  </td>
-                </tr>
-              )}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {filteredOrders.map((order) => (
+                    <tr
+                      key={order.orderId}
+                      className="text-center cursor-pointer border-b"
+                      style={{ borderColor: "#FFC0D3" }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#FFF7FA")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor = "transparent")
+                      }
+                    >
+                      <td className="p-3">{order.orderId}</td>
+                      <td className="p-3">{order.email}</td>
+                      <td className="p-3">{order.name}</td>
+                      <td className="p-3">{order.address}</td>
+                      <td className="p-3">{order.phoneNumber}</td>
+                      <td className="p-3">
+                        <select
+                          value={order.status}
+                          className="z-[50]"
+                          onChange={(e) =>
+                            changeOrderStatus(order.orderId, e.target.value)
+                          }
+                        >
+                          <option value={"Pending"}>Pending</option>
+                          <option value={"Delivered"}>Delivered</option>
+                          <option value={"Cancelled"}>Cancelled</option>
+                          <option value={"Processing"}>Processing</option>
+                        </select>
+                      </td>
+                      <td className="p-3">{order.total.toFixed(2)}</td>
+                      <td className="p-3">
+                        {new Date(order.date).toDateString()}
+                      </td>
+                      <td className="p-3 flex flex-col items-center justify-center gap-2">
+                        <button
+                          className="bg-gray-700 text-white p-2 rounded-lg hover:opacity-90"
+                          onClick={() => {
+                            setModalIsDisplaying(true);
+                            setDisplayingOrder(order);
+                          }}
+                        >
+                          Details
+                        </button>
+                        <MdOutlineModeEdit
+                          onClick={() =>
+                            navigate("/admin/editOrder", { state: order })
+                          }
+                          className="text-[22px] m-[2px] cursor-pointer text-[#6D214F]"
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                  {filteredOrders.length === 0 && (
+                    <tr>
+                      <td colSpan={9} className="text-center p-6 text-gray-500">
+                        No orders found.
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
 

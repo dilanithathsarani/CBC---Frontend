@@ -109,45 +109,44 @@ export default function LandingPage() {
         </section>
 
         {/* Featured Products */}
-<section>
-  <h2 className="text-2xl sm:text-3xl font-bold text-[#FF5C8D] mb-6 text-center">
-    Featured Products
-  </h2>
+        <section>
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#FF5C8D] mb-6 text-center">
+            Featured Products
+          </h2>
 
-  {/* Mobile: 3 tiles inline, smaller with spacing */}
-  <div className="sm:hidden flex justify-between px-4">
-    {products.slice(0, 2).map((product) => (
-      <div key={product.productId} className="w-[45%]">
-        <ProductCard
-          product={product}
-          className="w-full p-2 rounded-xl shadow hover:scale-105 transition"
-        />
-      </div>
-    ))}
-  </div>
+          {/* Mobile: 3 tiles inline, smaller with spacing */}
+          <div className="sm:hidden flex justify-between px-4">
+            {products.slice(0, 2).map((product) => (
+              <div key={product.productId} className="w-[45%]">
+                <ProductCard
+                  product={product}
+                  className="w-full p-2 rounded-xl shadow hover:scale-105 transition"
+                />
+              </div>
+            ))}
+          </div>
 
-  {/* Shop More link for mobile */}
-  <div className="sm:hidden flex justify-center mt-0">
-    <button
-      onClick={() => navigate("/products")}
-      className="text-[#FF5C8D] font-semibold hover:underline"
-    >
-      Shop More
-    </button>
-  </div>
+          {/* Shop More link for mobile */}
+          <div className="sm:hidden flex justify-center mt-0">
+            <button
+              onClick={() => navigate("/products")}
+              className="text-[#FF5C8D] font-semibold hover:underline"
+            >
+              Shop More
+            </button>
+          </div>
 
-  {/* Grid for tablet/desktop */}
-  <div className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-6">
-    {products.map((product) => (
-      <ProductCard
-        key={product.productId}
-        product={product}
-        className="transition transform hover:scale-105 hover:shadow-xl"
-      />
-    ))}
-  </div>
-</section>
-
+          {/* Grid for tablet/desktop */}
+          <div className="hidden sm:grid grid-cols-2 md:grid-cols-4 gap-6">
+            {products.map((product) => (
+              <ProductCard
+                key={product.productId}
+                product={product}
+                className="transition transform hover:scale-105 hover:shadow-xl"
+              />
+            ))}
+          </div>
+        </section>
 
         {/* Trending Products Carousel */}
         <section className="py-12 bg-[#FFFAFA] rounded-2xl">

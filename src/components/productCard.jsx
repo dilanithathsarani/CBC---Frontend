@@ -18,9 +18,11 @@ export default function ProductCard({ product }) {
 
       <div className="h-[140px] p-4 flex flex-col justify-between">
         <p className="text-sm text-[#524A4E]">{product.productId}</p>
-        <p className="text-lg font-semibold text-[#524A4E] truncate">{product.name}</p>
+        <p className="text-lg font-semibold text-[#524A4E] truncate">
+          {product.name}
+        </p>
         <p className="text-lg font-bold text-[#FF5C8D]">
-          LKR.{product.price.toFixed(2)}{' '}
+          LKR.{product.price.toFixed(2)}{" "}
           {product.price < product.labeledPrice && (
             <span className="line-through text-sm text-gray-400 ml-2">
               LKR.{product.labeledPrice.toFixed(2)}

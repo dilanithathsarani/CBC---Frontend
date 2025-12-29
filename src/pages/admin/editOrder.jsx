@@ -58,7 +58,9 @@ export default function EditOrderForm() {
     const newBillItems = [...billItems];
     newBillItems.splice(index, 1);
     setBillItems(newBillItems);
-    setTotal((prevTotal) => prevTotal - removedItem.price * removedItem.quantity);
+    setTotal(
+      (prevTotal) => prevTotal - removedItem.price * removedItem.quantity
+    );
   };
 
   // Add product
@@ -68,7 +70,9 @@ export default function EditOrderForm() {
     const product = allProducts.find((p) => p.productId === selectedProductId);
     if (!product) return toast.error("Product not found");
 
-    const exists = billItems.find((item) => item.productId === product.productId);
+    const exists = billItems.find(
+      (item) => item.productId === product.productId
+    );
     if (exists) return toast.error("Product already in order");
 
     const newItem = {
@@ -104,9 +108,12 @@ export default function EditOrderForm() {
   const handleDeleteOrder = async () => {
     try {
       const token = localStorage.getItem("token");
-      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/order/${order.orderId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(
+        `${import.meta.env.VITE_BACKEND_URL}/api/order/${order.orderId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
       toast.success("Order deleted successfully");
       navigate("/admin/orders");
     } catch (err) {
@@ -129,12 +136,28 @@ export default function EditOrderForm() {
         </h1>
 
         {/* Basic Info */}
-        {[ 
+        {[
           { value: order.orderId, disabled: true },
-          { value: name, placeholder: "Customer Name", onChange: (e) => setName(e.target.value) },
-          { value: email, placeholder: "Customer Email", onChange: (e) => setEmail(e.target.value) },
-          { value: address, placeholder: "Address", onChange: (e) => setAddress(e.target.value) },
-          { value: phoneNumber, placeholder: "Phone Number", onChange: (e) => setPhoneNumber(e.target.value) }
+          {
+            value: name,
+            placeholder: "Customer Name",
+            onChange: (e) => setName(e.target.value),
+          },
+          {
+            value: email,
+            placeholder: "Customer Email",
+            onChange: (e) => setEmail(e.target.value),
+          },
+          {
+            value: address,
+            placeholder: "Address",
+            onChange: (e) => setAddress(e.target.value),
+          },
+          {
+            value: phoneNumber,
+            placeholder: "Phone Number",
+            onChange: (e) => setPhoneNumber(e.target.value),
+          },
         ].map((field, i) => (
           <input
             key={i}
@@ -160,7 +183,10 @@ export default function EditOrderForm() {
         {/* Bill Items */}
         <div className="w-[400px] mt-4">
           {billItems.map((item, index) => (
-            <div key={index} className="flex justify-between items-center mb-2 border-b pb-2">
+            <div
+              key={index}
+              className="flex justify-between items-center mb-2 border-b pb-2"
+            >
               <span className="text-sm font-semibold">{item.productName}</span>
               <input
                 type="number"
@@ -189,10 +215,15 @@ export default function EditOrderForm() {
           >
             <option value="">Select Product</option>
             {allProducts.map((p) => (
-              <option key={p.productId} value={p.productId}>{p.name}</option>
+              <option key={p.productId} value={p.productId}>
+                {p.name}
+              </option>
             ))}
           </select>
-          <button onClick={handleAddProduct} className="bg-[#FFC0D3] px-4 py-2 rounded-xl">
+          <button
+            onClick={handleAddProduct}
+            className="bg-[#FFC0D3] px-4 py-2 rounded-xl"
+          >
             Add
           </button>
         </div>

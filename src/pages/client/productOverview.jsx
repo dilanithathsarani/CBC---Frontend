@@ -120,7 +120,7 @@ export default function ProductOverview() {
           Product Not Found
         </div>
       )}
-      <Footer/>
+      <Footer />
     </div>
   );
 }

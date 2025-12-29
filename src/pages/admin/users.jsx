@@ -13,7 +13,6 @@ export default function AdminUsersPage() {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
-
   useEffect(() => {
     if (!loaded) {
       axios
@@ -75,7 +74,10 @@ export default function AdminUsersPage() {
   );
 
   return (
-    <div className="w-full h-full rounded-lg relative p-6" style={{ backgroundColor: "#FDEFF4" }}>
+    <div
+      className="w-full h-full rounded-lg relative p-6"
+      style={{ backgroundColor: "#FDEFF4" }}
+    >
       <h1 className="text-3xl font-bold mb-6 text-[#524A4E]">
         👤 Manage Users
       </h1>
@@ -104,89 +106,89 @@ export default function AdminUsersPage() {
       {loaded ? (
         <div className="rounded-lg bg-white shadow-lg border border-[#FFC0D3] pb-4">
           <div className="max-h-[65vh] overflow-y-auto">
-          <table className="w-full border-collapse">
-            <thead
-              className="sticky top-0 z-10"
-              style={{ backgroundColor: "#FFC0D3" }}
-            >
-              <tr
-                className="text-gray-800"
+            <table className="w-full border-collapse">
+              <thead
+                className="sticky top-0 z-10"
                 style={{ backgroundColor: "#FFC0D3" }}
               >
-                <th className="p-3">Name</th>
-                <th className="p-3">Email</th>
-                <th className="p-3">Role</th>
-                <th className="p-3">Verified</th>
-                <th className="p-3">Status</th>
-                <th className="p-3">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredUsers.map((user, i) => (
                 <tr
-                  key={user._id}
-                  className="text-center border-b cursor-pointer"
-                  style={{ borderColor: "#FFC0D3" }}
-                  onMouseEnter={(e) =>
-                    (e.currentTarget.style.backgroundColor = "#FFF7FA")
-                  }
-                  onMouseLeave={(e) =>
-                    (e.currentTarget.style.backgroundColor = "transparent")
-                  }
+                  className="text-gray-800"
+                  style={{ backgroundColor: "#FFC0D3" }}
                 >
-                  <td className="p-3">
-                    {user.firstName} {user.lastName}
-                  </td>
-                  <td className="p-3">{user.email}</td>
-                  <td className="p-3 capitalize">{user.role}</td>
-                  <td className="p-3">
-                    {user.isEmailVerified ? (
-                      <span className="px-2 py-1 rounded bg-green-100 text-green-700 font-semibold">
-                        ✔ Verified
-                      </span>
-                    ) : (
-                      <span className="px-2 py-1 rounded bg-yellow-100 text-yellow-600">
-                        Pending
-                      </span>
-                    )}
-                  </td>
-                  <td className="p-3">
-                    {user.isDisabled ? (
-                      <span className="px-2 py-1 rounded bg-red-100 text-[#FF5C8D] font-semibold">
-                        Disabled
-                      </span>
-                    ) : (
-                      <span className="px-2 py-1 rounded bg-green-100 text-green-700 font-semibold">
-                        Active
-                      </span>
-                    )}
-                  </td>
-                  <td className="p-3">
-                    <div className="w-full h-full flex justify-center">
-                      <FaRegTrashAlt
-                        onClick={() => deleteUser(user._id)}
-                        className="text-[22px] m-[10px] cursor-pointer"
-                        style={{ color: "#C0392B" }}
-                      />
-                      
-                      <MdOutlineModeEdit
-                        onClick={() => toggleStatus(user._id)}
-                        className="text-[22px] m-[10px] cursor-pointer"
-                        style={{ color: "#6D214F" }}
-                      />
-                    </div>
-                  </td>
+                  <th className="p-3">Name</th>
+                  <th className="p-3">Email</th>
+                  <th className="p-3">Role</th>
+                  <th className="p-3">Verified</th>
+                  <th className="p-3">Status</th>
+                  <th className="p-3">Actions</th>
                 </tr>
-              ))}
-              {filteredUsers.length === 0 && (
-                <tr>
-                  <td colSpan={6} className="text-center p-6 text-gray-500">
-                    No users found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filteredUsers.map((user, i) => (
+                  <tr
+                    key={user._id}
+                    className="text-center border-b cursor-pointer"
+                    style={{ borderColor: "#FFC0D3" }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.backgroundColor = "#FFF7FA")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.backgroundColor = "transparent")
+                    }
+                  >
+                    <td className="p-3">
+                      {user.firstName} {user.lastName}
+                    </td>
+                    <td className="p-3">{user.email}</td>
+                    <td className="p-3 capitalize">{user.role}</td>
+                    <td className="p-3">
+                      {user.isEmailVerified ? (
+                        <span className="px-2 py-1 rounded bg-green-100 text-green-700 font-semibold">
+                          ✔ Verified
+                        </span>
+                      ) : (
+                        <span className="px-2 py-1 rounded bg-yellow-100 text-yellow-600">
+                          Pending
+                        </span>
+                      )}
+                    </td>
+                    <td className="p-3">
+                      {user.isDisabled ? (
+                        <span className="px-2 py-1 rounded bg-red-100 text-[#FF5C8D] font-semibold">
+                          Disabled
+                        </span>
+                      ) : (
+                        <span className="px-2 py-1 rounded bg-green-100 text-green-700 font-semibold">
+                          Active
+                        </span>
+                      )}
+                    </td>
+                    <td className="p-3">
+                      <div className="w-full h-full flex justify-center">
+                        <FaRegTrashAlt
+                          onClick={() => deleteUser(user._id)}
+                          className="text-[22px] m-[10px] cursor-pointer"
+                          style={{ color: "#C0392B" }}
+                        />
+
+                        <MdOutlineModeEdit
+                          onClick={() => toggleStatus(user._id)}
+                          className="text-[22px] m-[10px] cursor-pointer"
+                          style={{ color: "#6D214F" }}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+                {filteredUsers.length === 0 && (
+                  <tr>
+                    <td colSpan={6} className="text-center p-6 text-gray-500">
+                      No users found.
+                    </td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       ) : (

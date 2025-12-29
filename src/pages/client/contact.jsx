@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { Toaster, toast } from 'react-hot-toast';
-import { Footer } from '../../components/footer';
+import React, { useState } from "react";
+import { Toaster, toast } from "react-hot-toast";
+import { Footer } from "../../components/footer";
 
 export default function ContactPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name || !email || !message) {
-      toast.error('Please fill all fields!');
+      toast.error("Please fill all fields!");
       return;
     }
-    toast.success('Message sent successfully!');
-    setName('');
-    setEmail('');
-    setMessage('');
+    toast.success("Message sent successfully!");
+    setName("");
+    setEmail("");
+    setMessage("");
   };
 
   return (
@@ -25,7 +25,9 @@ export default function ContactPage() {
       <h1 className="text-4xl font-bold text-[#FF5C8D] mb-8">Contact Us</h1>
       <div className="w-full max-w-5xl grid grid-cols-1 lg:grid-cols-2 gap-10 p-6">
         <div className="bg-white rounded-2xl shadow-[0_6px_20px_rgba(82,74,78,0.15)] p-8">
-          <h2 className="text-2xl font-semibold text-[#FF5C8D] mb-6">Send Us a Message</h2>
+          <h2 className="text-2xl font-semibold text-[#FF5C8D] mb-6">
+            Send Us a Message
+          </h2>
           <form onSubmit={handleSubmit} className="flex flex-col gap-5">
             <input
               type="text"
@@ -62,10 +64,14 @@ export default function ContactPage() {
 
         <div className="flex flex-col gap-6 p-6">
           <div className="bg-white rounded-2xl shadow-[0_6px_20px_rgba(82,74,78,0.15)] p-6">
-            <h2 className="text-2xl font-semibold text-[#FF5C8D] mb-4">Our Contact Details</h2>
+            <h2 className="text-2xl font-semibold text-[#FF5C8D] mb-4">
+              Our Contact Details
+            </h2>
             <p className="text-[#524A4E] mb-2">Email: support@cbcstore.com</p>
             <p className="text-[#524A4E] mb-2">Phone: +94 123 456 789</p>
-            <p className="text-[#524A4E]">Address: 123 E-commerce St, Colombo, Sri Lanka</p>
+            <p className="text-[#524A4E]">
+              Address: 123 E-commerce St, Colombo, Sri Lanka
+            </p>
           </div>
 
           <div className="rounded-2xl overflow-hidden shadow-[0_6px_20px_rgba(82,74,78,0.15)]">
@@ -82,7 +88,7 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

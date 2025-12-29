@@ -55,17 +55,32 @@ export default function RegisterPage() {
   return (
     <div className="w-full h-screen flex overflow-hidden">
       <div className="w-full md:w-1/2 flex justify-center items-center bg-gradient-to-r from-[#FF5C8D] via-[#FFC0D3] to-[#FDEFF4] p-6">
-        <div className="w-full max-w-md py-8 px-6 bg-transparent flex flex-col items-center rounded-2xl shadow-[0_0_20px_rgba(220,20,60,0.4)] 
-                        backdrop-blur-lg">
+        <div
+          className="w-full max-w-md py-8 px-6 bg-transparent flex flex-col items-center rounded-2xl shadow-[0_0_20px_rgba(220,20,60,0.4)] 
+                        backdrop-blur-lg"
+        >
           <h2 className="text-4xl font-bold text-[#DC143C] mb-6">Sign Up</h2>
 
-          {["firstName", "lastName", "email", "phone", "password", "confirmPassword"].map((field, idx) => (
+          {[
+            "firstName",
+            "lastName",
+            "email",
+            "phone",
+            "password",
+            "confirmPassword",
+          ].map((field, idx) => (
             <input
               key={idx}
               name={field}
               value={formData[field]}
               onChange={handleChange}
-              type={field.includes("password") ? "password" : field === "email" ? "email" : "text"}
+              type={
+                field.includes("password")
+                  ? "password"
+                  : field === "email"
+                  ? "email"
+                  : "text"
+              }
               placeholder={field
                 .replace(/([A-Z])/g, " $1")
                 .replace(/^./, (str) => str.toUpperCase())}

@@ -88,78 +88,78 @@ export default function AdminProductsPage() {
         // Scrollable container
         <div className="rounded-lg bg-white shadow-lg border border-[#FFC0D3] pb-4">
           <div className="max-h-[65vh] overflow-y-auto">
-          <table className="w-full border-collapse">
-            <thead
-              className="sticky top-0 z-10"
-              style={{ backgroundColor: "#FFC0D3" }}
-            >
-              <tr
-                className="text-gray-800"
+            <table className="w-full border-collapse">
+              <thead
+                className="sticky top-0 z-10"
                 style={{ backgroundColor: "#FFC0D3" }}
               >
-                <th className="p-3">Product ID</th>
-                <th className="p-3">Product Name</th>
-                <th className="p-3">Category</th>
-                <th className="p-3">Price</th>
-                <th className="p-3">Labeled Price</th>
-                <th className="p-3">Stock</th>
-                <th className="p-3">Actions</th>
-              </tr>
-            </thead>
+                <tr
+                  className="text-gray-800"
+                  style={{ backgroundColor: "#FFC0D3" }}
+                >
+                  <th className="p-3">Product ID</th>
+                  <th className="p-3">Product Name</th>
+                  <th className="p-3">Category</th>
+                  <th className="p-3">Price</th>
+                  <th className="p-3">Labeled Price</th>
+                  <th className="p-3">Stock</th>
+                  <th className="p-3">Actions</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              {filteredProducts.map((product, index) => {
-                return (
-                  <tr
-                    key={index}
-                    className="text-center border-b cursor-pointer"
-                    style={{ borderColor: "#FFC0D3" }}
-                    onMouseEnter={(e) =>
-                      (e.currentTarget.style.backgroundColor = "#FFF7FA")
-                    }
-                    onMouseLeave={(e) =>
-                      (e.currentTarget.style.backgroundColor = "transparent")
-                    }
-                  >
-                    <td className="p-3">{product.productId}</td>
-                    <td className="p-3">{product.name}</td>
-                    <td className="p-3">{product.category}</td>
-                    <td className="p-3">{product.price}</td>
-                    <td className="p-3">{product.labeledPrice}</td>
-                    <td className="p-3">{product.stock}</td>
-                    <td className="p-3">
-                      <div className="w-full h-full flex justify-center">
-                        <FaRegTrashAlt
-                          onClick={() => {
-                            deleteProduct(product.productId);
-                          }}
-                          className="text-[22px] m-[10px] cursor-pointer"
-                          style={{ color: "#C0392B" }}
-                        />
+              <tbody>
+                {filteredProducts.map((product, index) => {
+                  return (
+                    <tr
+                      key={index}
+                      className="text-center border-b cursor-pointer"
+                      style={{ borderColor: "#FFC0D3" }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#FFF7FA")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.backgroundColor = "transparent")
+                      }
+                    >
+                      <td className="p-3">{product.productId}</td>
+                      <td className="p-3">{product.name}</td>
+                      <td className="p-3">{product.category}</td>
+                      <td className="p-3">{product.price}</td>
+                      <td className="p-3">{product.labeledPrice}</td>
+                      <td className="p-3">{product.stock}</td>
+                      <td className="p-3">
+                        <div className="w-full h-full flex justify-center">
+                          <FaRegTrashAlt
+                            onClick={() => {
+                              deleteProduct(product.productId);
+                            }}
+                            className="text-[22px] m-[10px] cursor-pointer"
+                            style={{ color: "#C0392B" }}
+                          />
 
-                        <MdOutlineModeEdit
-                          onClick={() => {
-                            navigate("/admin/editProduct", {
-                              state: product,
-                            });
-                          }}
-                          className="text-[22px] m-[10px] cursor-pointer"
-                          style={{ color: "#6D214F" }}
-                        />
-                      </div>
+                          <MdOutlineModeEdit
+                            onClick={() => {
+                              navigate("/admin/editProduct", {
+                                state: product,
+                              });
+                            }}
+                            className="text-[22px] m-[10px] cursor-pointer"
+                            style={{ color: "#6D214F" }}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+                {filteredProducts.length === 0 && (
+                  <tr>
+                    <td colSpan={7} className="text-center p-6 text-gray-500">
+                      No products found.
                     </td>
                   </tr>
-                );
-              })}
-              {filteredProducts.length === 0 && (
-                <tr>
-                  <td colSpan={7} className="text-center p-6 text-gray-500">
-                    No products found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
