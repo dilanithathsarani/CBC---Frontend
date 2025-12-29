@@ -37,9 +37,9 @@ export default function ProductOverview() {
       {status === "loaded" && (
         <div className="w-full flex flex-col lg:flex-row gap-10 h-full">
           {/* Product Name - Mobile */}
-          <h1 className="text-3xl font-bold text-center mb-6 text-[#FF5C8D] lg:hidden">
+          <h1 className="text-3xl font-bold text-center mt-8 text-[#FF5C8D] lg:hidden">
             {product.name}
-            <span className="block text-lg text-[#524A4E] mt-1">
+            <span className="block text-lg text-[#524A4E] mt-2">
               {product.altNames.join(" | ")}
             </span>
           </h1>

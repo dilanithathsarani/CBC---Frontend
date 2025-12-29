@@ -39,7 +39,7 @@ export default function AddAdminPage() {
 
   return (
     <div
-      className="fixed inset-0 flex justify-center items-center z-50"
+      className="w-full h-full rounded-lg flex justify-center items-center"
       style={{ backgroundColor: "#FDEFF4" }}
     >
       <div

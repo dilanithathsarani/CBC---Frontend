@@ -12,6 +12,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import EditOrderForm from "./admin/editOrder";
 import AdminUsersPage from "./admin/users";
+import AddAdminPage from "./admin/addAdmin";
 
 export default function AdminPage() {
   const [userValidated, setUserValidated] = useState(false);
@@ -92,6 +93,7 @@ export default function AdminPage() {
               <Route path="/addProduct" element={<AddProductForm />} />
               <Route path="/editProduct" element={<EditProductForm />} />
               <Route path="/editOrder" element={<EditOrderForm />} />
+              <Route path="/addAdmin" element={<AddAdminPage />} /> 
             </Routes>
           </div>
         </>
